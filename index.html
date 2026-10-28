@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flattery Films Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08090a; --ink:#e9e6df; --dim:rgba(233,230,223,.55);
+    --line:rgba(233,230,223,.14); --panel:#0b0c0d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:"Jost",system-ui,sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+
+  /* hero + emblem */
+  .hero{min-height:100vh;display:grid;place-items:center}
+  #logo{width:min(86vmin,720px);aspect-ratio:1;display:block;touch-action:none}
+  .lightbox{position:fixed;inset:0;z-index:50;background:rgba(5,5,6,.92);display:grid;place-items:center;
+    opacity:0;pointer-events:none;transition:opacity .5s;cursor:zoom-out;padding:24px}
+  .lightbox.show{opacity:1;pointer-events:auto}
+  .lightbox figure{max-width:min(1000px,100%);text-align:center}
+  .lightbox img{max-width:100%;max-height:72vh;display:block;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .lightbox p{margin-top:22px;color:var(--dim);font-size:14px;letter-spacing:.08em;line-height:1.7}
+
+  /* menu button */
+  .burger{position:fixed;top:28px;right:32px;z-index:30;background:none;border:0;cursor:pointer;
+    color:var(--ink);display:flex;align-items:center;gap:14px;font:inherit;font-size:11px;letter-spacing:.35em}
+  .burger i{display:block;width:26px;height:1px;background:currentColor;position:relative}
+  .burger i::after{content:"";position:absolute;left:0;top:7px;width:26px;height:1px;background:currentColor}
+
+  /* overlay */
+  .nav{position:fixed;inset:0 auto 0 0;width:min(560px,100%);background:var(--panel);z-index:40;
+    transform:translateX(-100%);transition:transform .7s cubic-bezier(.7,0,.2,1);overflow-y:auto;
+    box-shadow:0 0 80px rgba(0,0,0,.8)}
+  .open .nav{transform:none}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .6s;z-index:35}
+  .open .scrim{opacity:1;pointer-events:auto}
+  .close{position:absolute;top:28px;right:32px;width:22px;height:22px;background:none;border:0;cursor:pointer}
+  .close::before,.close::after{content:"";position:absolute;left:0;top:50%;width:100%;height:1px;background:var(--ink);transform:rotate(45deg)}
+  .close::after{transform:rotate(-45deg)}
+
+  .list{margin-top:120px;border-top:1px solid var(--line)}
+  .item{border-bottom:1px solid var(--line)}
+  .head{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;color:var(--ink);
+    cursor:pointer;padding:30px 44px;font:inherit;font-size:15px;letter-spacing:.42em;text-align:left;transition:color .3s}
+  .head:hover{color:#fff}
+  .chev{width:9px;height:9px;border-right:1px solid var(--dim);border-bottom:1px solid var(--dim);transform:rotate(45deg) translateY(-3px);transition:transform .4s}
+  .item.is-open .chev{transform:rotate(-135deg) translateY(-3px)}
+  .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s ease}
+  .item.is-open .body{grid-template-rows:1fr}
+  .body>div{overflow:hidden}
+  .inner{padding:0 44px 34px;color:var(--dim);font-size:14px;line-height:1.7;letter-spacing:.03em}
+  .stills{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+  .stills figure{aspect-ratio:3/4;background:linear-gradient(160deg,#25272a,#121314);position:relative}
+  .stills figcaption{position:absolute;left:0;bottom:-20px;font-size:10px;letter-spacing:.25em}
+  .stills{padding-bottom:20px}
+
+  .plain{list-style:none;padding:36px 44px}
+  .plain a{display:inline-block;color:var(--ink);text-decoration:none;font-size:15px;letter-spacing:.42em;padding:9px 0;transition:opacity .3s}
+  .plain a:hover{opacity:.6}
+
+  @media (max-width:560px){
+    .head,.plain{padding-left:24px;padding-right:24px}
+    .inner{padding:0 24px 30px}
+    .burger{right:20px}.close{right:20px}
+  }
+</style>
+</head>
+<body>
+
+<button class="burger" id="openBtn" aria-label="Open menu">MENU <i></i></button>
+
+<main class="hero">
+  <canvas id="logo" aria-label="Flattery Films logo as a moving film strip"></canvas>
+</main>
+<div class="lightbox" id="lightbox"><figure><img alt=""><p></p></figure></div>
+
+
+<div class="scrim" id="scrim"></div>
+<nav class="nav" aria-label="Main">
+  <button class="close" id="closeBtn" aria-label="Close menu"></button>
+
+  <div class="list">
+    <div class="item">
+      <button class="head" aria-expanded="false">WHAT <span class="chev"></span></button>
+      <div class="body"><div><div class="inner">
+        <div class="stills">
+          <figure><figcaption>SHELTER</figcaption></figure>
+          <figure><figcaption>SLEEPING ROUGH</figcaption></figure>
+          <figure><figcaption>THIN SPACE</figcaption></figure>
+        </div>
+      </div></div></div>
+    </div>
+    <div class="item">
+      <button class="head" aria-expanded="false">WHY <span class="chev"></span></button>
+      <div class="body"><div><div class="inner">
+        Flattery will get you everywhere. Attention and the right questions reveal people's authentic beauty.
+      </div></div></div>
+    </div>
+    <div class="item">
+      <button class="head" aria-expanded="false">WHERE <span class="chev"></span></button>
+      <div class="body"><div><div class="inner">Florida · England · wherever the story is.</div></div></div>
+    </div>
+    <div class="item">
+      <button class="head" aria-expanded="false">WHO <span class="chev"></span></button>
+      <div class="body"><div><div class="inner">Will Beaucher, filmmaker. A short bio goes here.</div></div></div>
+    </div>
+  </div>
+
+  <ul class="plain">
+    <li><a href="#mood">MOOD</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+</nav>
+
+<script>
+  // =====================================================================
+  //  FLATTERY FILMS HERO — the logo itself is the film; stills run inside it
+  // =====================================================================
+
+  // 1) YOUR STILLS — image paths/URLs, with the story for each.
+  //    Leave empty to see the placeholder frames.
+  const STILLS = [
+    // ⚠ Check this first link: upload the photo to CodePen Assets and paste its real link here if it differs.
+    { src: "https://assets.codepen.io/14693322/Thin-Space-Eric-Pall282736adino-Sean-Murphy-D12-CostaRica-1124.jpg", caption: "Thin Space — Costa Rica." },
+    { src: "https://assets.codepen.io/14693322/Thin-Space-Pat-Muldoon-Murphy-D2-0125320077.jpg", caption: "Thin Space — Pat Muldoon." },
+    { src: "https://assets.codepen.io/14693322/Thin_Space_Sean_Murphy_Mexico_0924_D12262651.jpg", caption: "Thin Space — Mexico." },
+    { src: "https://assets.codepen.io/14693322/Thin-Space-Eric-Pall300077adino-Sean-Murphy-D5-CostaRica-1124.jpg", caption: "Thin Space — Costa Rica." },
+    { src: "https://assets.codepen.io/14693322/Thin-Space-Scotland-Sean-Murphy-D5-052547463.jpg", caption: "Thin Space — Scotland." },
+    { src: "https://assets.codepen.io/14693322/Thin-Space-Scotland-Sean-Murphy-D1Leica-052536906.jpg", caption: "Thin Space — Scotland." },
+    { src: "https://assets.codepen.io/14693322/Thin-Space-Scotland-Sean-Murphy-D2-052537900.jpg", caption: "Thin Space — Scotland." },
+  ];
+
+  // 2) LOOK & FEEL
+  const SPEED       = 14;   // film speed, px per second (0 = still)
+  const HOVER_SPEED = 2;    // speed while the cursor is on the logo (slows so you can pick a frame)
+  const IDLE_ALPHA  = 0.5;  // brightness of the black-and-white frames at rest (0–1)
+  const COLOR_REACH = 1.3;  // how far the colour spreads from the cursor, in frame-widths
+
+  // 3) OUTLINE — the film-strip outline around the logo (sizes are px at a 520px-wide logo; they scale with it)
+  const GAP    = 8.5;   // px from one perforation to the next
+  const HOLE_W = 3.4;   // perforation length (along the outline), px
+  const HOLE_H = 5;     // perforation height (across the outline), px
+  const ROUND  = 0.9;   // corner rounding of each perforation, px
+  const OUTLINE_SPEED       = 6;   // how fast the outline runs, px per second
+  const OUTLINE_HOVER_SPEED = 40;  // outline speed while the cursor is on the logo
+  const REACH  = 80;    // cursor influence radius, px
+  const PUSH   = 10;    // how far perforations lift away from the cursor, px
+  const BAND   = 12;    // width of the faint film strip under the holes, px (0 = none)
+
+  // Logo outline traced from the artwork, centred on 0,0, scaled to 1.
+  const SHAPES = [[[0.5, -0.4188], [0.3375, -0.2563], [0.3347, -0.2563], [0.3333, 0.3291], [0.035, 0.3291], [0.0336, 0.0462], [-0.0952, 0.1751], [-0.098, 0.3291], [-0.2507, 0.3291], [-0.416, 0.4944], [0.4034, 0.4944], [0.4286, 0.4888], [0.4594, 0.472], [0.4846, 0.444], [0.4958, 0.4202], [0.5, 0.402]], [[0.4146, -0.4944], [-0.3978, -0.4944], [-0.4216, -0.4902], [-0.4426, -0.4818], [-0.4594, -0.4706], [-0.4762, -0.4538], [-0.4916, -0.4272], [-0.4986, -0.402], [-0.4986, 0.4216], [-0.3347, 0.2577], [-0.3347, 0.105], [-0.3319, 0.1022], [-0.1807, 0.1022], [-0.0518, -0.0266], [-0.3347, -0.0294], [-0.3347, -0.3277], [0.2521, -0.3291], [0.2521, -0.3319]]];
+  // The film's path through each bar of the logo (centre line + bar width), same units.
+  // piece = which half of the logo the film stays inside (0 = right/bottom half, 1 = top/left half).
+  const ROUTES = [
+    { w: 0.131, pts: [[-0.417, 0.0365], [0.06, 0.0365]], piece: 1, clip: [-0.335, -1, 1, 1] },  // F middle arm (starts at the left bar's inner edge)
+    { w: 0.133, pts: [[-0.0315, 0.4115], [-0.0315, -0.06]], piece: 0, clip: [-1, -1, 1, 0.329] }, // inner stem (starts at the bottom bar's top edge)
+    { w: 0.165, pts: [[0.52, -0.4115], [-0.417, -0.4115], [-0.417, 0.53]], piece: 1 },  // top bar → left bar
+    { w: 0.166, pts: [[0.4165, -0.53], [0.4165, 0.4115], [-0.53, 0.4115]], piece: 0 },  // right bar → bottom bar
+  ];
+
+  const cv = document.getElementById("logo"), ctx = cv.getContext("2d");
+  let W = 0, L = 0, routes = [], outline = null, pieces = [], mouse = { x: -1e4, y: -1e4 }, over = false;
+  let speed = SPEED, oSpeed = OUTLINE_SPEED, last = 0, hits = [], glow = {}, rims = [], K = 1; let DPR = 1;
+
+  // ---- stills: a colour version and a black-and-white version of each ----
+  function greyOf(img) {
+    const o = document.createElement("canvas"); o.width = img.naturalWidth || img.width; o.height = img.naturalHeight || img.height;
+    const g = o.getContext("2d");
+    if ("filter" in g) { g.filter = "grayscale(1) contrast(1.05)"; g.drawImage(img, 0, 0); return o; }
+    g.drawImage(img, 0, 0);
+    try { const d = g.getImageData(0, 0, o.width, o.height), p = d.data;
+      for (let i = 0; i < p.length; i += 4) { const y = p[i] * .3 + p[i + 1] * .59 + p[i + 2] * .11; p[i] = p[i + 1] = p[i + 2] = y; }
+      g.putImageData(d, 0, 0); } catch (e) {}
+    return o;
+  }
+  const PH = [["#c9834f", "#3b2a4d"], ["#5d8fa8", "#1d2b33"], ["#d9b26a", "#5a3a22"], ["#7e9b6a", "#22301f"], ["#b0606a", "#2a1a2e"], ["#6f7fb8", "#1a1c33"]];
+  const frames = (STILLS.length ? STILLS : PH.map((c, i) => ({ ph: c, caption: "Placeholder still " + (i + 1) + " — add your own images in STILLS." })))
+    .map((s, i) => {
+      const f = { caption: s.caption || "", color: null, grey: null };
+      if (s.ph) {
+        const o = document.createElement("canvas"); o.width = 400; o.height = 300; const g = o.getContext("2d");
+        const gr = g.createLinearGradient(0, 0, 0, 300); gr.addColorStop(0, s.ph[0]); gr.addColorStop(1, s.ph[1]);
+        g.fillStyle = gr; g.fillRect(0, 0, 400, 300);
+        g.fillStyle = "rgba(255,240,220,.35)"; g.beginPath(); g.arc(120 + i * 30, 110, 46, 0, 7); g.fill();
+        const v = g.createRadialGradient(200, 150, 60, 200, 150, 260); v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,.55)");
+        g.fillStyle = v; g.fillRect(0, 0, 400, 300);
+        g.fillStyle = "rgba(255,255,255,.8)"; g.font = "300 26px Jost, sans-serif"; g.textAlign = "center";
+        g.fillText("STILL " + String(i + 1).padStart(2, "0"), 200, 220);
+        f.color = o; f.grey = greyOf(o); f.src = o.toDataURL("image/jpeg", .85);
+      } else {
+        // load the still, then keep a small working copy (max 900px) so the animation stays smooth;
+        // the full-size original is what opens in the lightbox
+        const img = new Image();
+        img.onload = () => {
+          const max = 900, k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+          const c = document.createElement("canvas");
+          c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          f.color = c; f.grey = greyOf(c);
+        };
+        img.onerror = () => console.warn("Couldn't load still:", s.src);
+        img.src = s.src; f.src = s.src;
+      }
+      return f;
+    });
+
+  // ---- geometry ----
+  // Turn a polyline into dense samples, rounding each corner with radius r so frames swing round smoothly.
+  function sample(pts, r) {
+    const out = []; let s = 0;
+    const push = (x, y, ang, k) => { if (out.length) { const p = out[out.length - 1]; s += Math.hypot(x - p.x, y - p.y); } out.push({ x, y, ang, k, s }); };
+    const line = (a, b, k) => { const len = Math.hypot(b[0] - a[0], b[1] - a[1]), ang = Math.atan2(b[1] - a[1], b[0] - a[0]);
+      for (let d = 0; d <= len; d += 1) push(a[0] + Math.cos(ang) * d, a[1] + Math.sin(ang) * d, ang, k); };
+    let start = pts[0];
+    for (let i = 1; i < pts.length; i++) {
+      const b = pts[i];
+      if (i === pts.length - 1) { line(start, b, 0); break; }
+      const c = pts[i + 1];
+      const a1 = Math.atan2(b[1] - start[1], b[0] - start[0]), a2 = Math.atan2(c[1] - b[1], c[0] - b[0]);
+      let turn = a2 - a1; while (turn > Math.PI) turn -= 2 * Math.PI; while (turn < -Math.PI) turn += 2 * Math.PI;
+      const trim = r * Math.tan(Math.abs(turn) / 2);
+      const p1 = [b[0] - Math.cos(a1) * trim, b[1] - Math.sin(a1) * trim];
+      line(start, p1, 0);
+      const side = Math.sign(turn), cx = p1[0] + Math.cos(a1 + side * Math.PI / 2) * r, cy = p1[1] + Math.sin(a1 + side * Math.PI / 2) * r;
+      const steps = Math.max(4, Math.ceil(Math.abs(turn) * r));
+      for (let j = 1; j <= steps; j++) {
+        const ang = a1 + turn * j / steps, rad = ang - side * Math.PI / 2;
+        push(cx + Math.cos(rad) * r, cy + Math.sin(rad) * r, ang, side);
+      }
+      start = [b[0] + Math.cos(a2) * trim, b[1] + Math.sin(a2) * trim];
+    }
+    return out;
+  }
+  function at(R, s) {                       // position/direction at distance s (extends past the ends)
+    const S = R.S, n = S.length;
+    if (s <= 0) { const p = S[0]; return { x: p.x + Math.cos(p.ang) * s, y: p.y + Math.sin(p.ang) * s, ang: p.ang, k: 0 }; }
+    if (s >= R.len) { const p = S[n - 1], d = s - R.len; return { x: p.x + Math.cos(p.ang) * d, y: p.y + Math.sin(p.ang) * d, ang: p.ang, k: 0 }; }
+    let lo = 0, hi = n - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (S[m].s <= s) lo = m; else hi = m; }
+    return S[lo];
+  }
+
+  function build() {
+    const dpr = devicePixelRatio || 1, r = cv.getBoundingClientRect();
+    W = r.width; cv.width = W * dpr; cv.height = W * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); DPR = dpr;
+    L = W * 0.84; const c = W / 2, P = ([x, y]) => [c + x * L, c + y * L];
+    outline = new Path2D(); pieces = [];
+    for (const poly of SHAPES) {
+      const pc = new Path2D();
+      poly.forEach((q, i) => { const [x, y] = P(q); if (i) { outline.lineTo(x, y); pc.lineTo(x, y); } else { outline.moveTo(x, y); pc.moveTo(x, y); } });
+      outline.closePath(); pc.closePath(); pieces.push(pc);
+    }
+    K = L / 447;                                       // scale the outline sizes with the logo
+    rims = SHAPES.map(poly => {
+      const Q = poly.map(P), segs = []; let total = 0;
+      for (let i = 0; i < Q.length; i++) {
+        const a = Q[i], b = Q[(i + 1) % Q.length], len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        segs.push({ a, b, len, start: total, ang: Math.atan2(b[1] - a[1], b[0] - a[0]) }); total += len;
+      }
+      const n = Math.round(total / (GAP * K));
+      return { segs, total, n, step: total / n, offset: 0, holes: Array.from({ length: n }, () => ({ glow: 0, lx: 0, ly: 0 })) };
+    });
+    routes = ROUTES.map((rt, ri) => {
+      const w = rt.w * L, S = sample(rt.pts.map(P), w / 2);
+      const m = w * 0.13;                              // dark margin each side of the pictures
+      const fh = w - 2 * m, fl = fh * 1.3, gap = fh * 0.1; // frame across / along / gap
+      const cl = rt.clip && [P([rt.clip[0], rt.clip[1]]), P([rt.clip[2], rt.clip[3]])];
+      return { ri, w, r: w / 2, S, cl, piece: rt.piece, len: S[S.length - 1].s, offset: 0, m, fh, fl, pitch: fl + gap,
+               hole: { along: w * 0.05, across: w * 0.075, pitch: w * 0.14 } };
+    });
+  }
+
+  function frame(t) {
+    const dt = Math.min(0.05, (t - last) / 1000 || 0); last = t;
+    speed += ((over ? HOVER_SPEED : SPEED) - speed) * 0.06;
+    ctx.clearRect(0, 0, W, W); hits = [];
+    ctx.save(); ctx.clip(outline, "nonzero");
+    ctx.fillStyle = "#101113"; ctx.fill(outline);
+
+    for (const R of routes) {
+      R.offset += speed * dt;
+      ctx.save();
+      ctx.clip(pieces[R.piece]);                  // keep this film inside its own half of the logo
+      if (R.cl) { ctx.beginPath(); ctx.rect(R.cl[0][0], R.cl[0][1], R.cl[1][0] - R.cl[0][0], R.cl[1][1] - R.cl[0][1]); ctx.clip(); }
+      const span = R.len + R.pitch * 2, n = Math.ceil(span / R.pitch), loop = n * R.pitch;
+      // frames
+      for (let i = 0; i < n; i++) {
+        const s = ((R.offset + i * R.pitch) % loop) - R.pitch;
+        if (s < -R.fl || s > R.len + R.fl) continue;
+        const p = at(R, s), f = frames[(i + R.ri * 2) % frames.length], key = R.ri + ":" + i;
+        const d = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+        const target = Math.max(0, Math.min(1, 1.25 - d / (R.fh * COLOR_REACH)));
+        glow[key] = (glow[key] || 0) + (target - (glow[key] || 0)) * 0.1;
+        hits.push({ x: p.x, y: p.y, f, r: R.fh * 0.8 });
+        if (!f.color) continue;
+        // the frame's shape is swept along the film's path, so it bends with the corner
+        const half = R.fh / 2, a0 = s - R.fl / 2, a1 = s + R.fl / 2, steps = Math.ceil(R.fl / 2);
+        const left = [], right = [];
+        let bx0 = Infinity, by0 = Infinity, bx1 = -Infinity, by1 = -Infinity;
+        for (let j = 0; j <= steps; j++) {
+          const q = at(R, a0 + (a1 - a0) * j / steps), nx = Math.cos(q.ang + Math.PI / 2), ny = Math.sin(q.ang + Math.PI / 2);
+          for (const side of [-1, 1]) {
+            const o = (q.k && side === q.k) ? Math.min(half, R.r * 0.97) : half;  // inner side of a bend can't go past its centre
+            const x = q.x + nx * o * side, y = q.y + ny * o * side;
+            (side < 0 ? left : right).push([x, y]);
+            bx0 = Math.min(bx0, x); by0 = Math.min(by0, y); bx1 = Math.max(bx1, x); by1 = Math.max(by1, y);
+          }
+        }
+        ctx.beginPath(); left.forEach(([x, y], j) => j ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+        for (let j = right.length - 1; j >= 0; j--) ctx.lineTo(...right[j]); ctx.closePath();
+        ctx.save(); ctx.clip();
+        // keep the picture upright, cropped to cover the frame
+        const img = f.color, iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+        const bw = bx1 - bx0, bh = by1 - by0, sc = Math.max(bw / iw, bh / ih);
+        const dw = iw * sc, dh = ih * sc, dx = (bx0 + bx1) / 2 - dw / 2, dy = (by0 + by1) / 2 - dh / 2;
+        ctx.globalAlpha = IDLE_ALPHA * (1 - glow[key]) + 0.15 * glow[key]; ctx.drawImage(f.grey, dx, dy, dw, dh);
+        if (glow[key] > 0.01) { ctx.globalAlpha = glow[key]; ctx.drawImage(img, dx, dy, dw, dh); }
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+    drawRims(dt);
+    cv.style.cursor = nearest() ? "pointer" : "default";
+    requestAnimationFrame(frame);
+  }
+
+  // ---- the film-strip outline: one row of perforations running round the logo's edge ----
+  function rimAt(p, s) {
+    s = ((s % p.total) + p.total) % p.total;
+    let seg = p.segs[0];
+    for (const g of p.segs) if (s >= g.start) seg = g; else break;
+    const t = (s - seg.start) / seg.len;
+    return [seg.a[0] + (seg.b[0] - seg.a[0]) * t, seg.a[1] + (seg.b[1] - seg.a[1]) * t, seg.ang];
+  }
+  function drawRims(dt) {
+    oSpeed += ((over ? OUTLINE_HOVER_SPEED : OUTLINE_SPEED) - oSpeed) * 0.05;
+    if (BAND) {                                   // faint strip with hairline edges
+      ctx.globalAlpha = 1; ctx.lineJoin = "round";
+      for (const p of rims) {
+        ctx.beginPath(); p.segs.forEach((g, i) => i ? ctx.lineTo(...g.a) : ctx.moveTo(...g.a)); ctx.closePath();
+        ctx.strokeStyle = "rgba(233,230,223,.16)"; ctx.lineWidth = BAND * K; ctx.stroke();
+        ctx.strokeStyle = "#08090a"; ctx.lineWidth = BAND * K - 1.4; ctx.stroke();
+        ctx.strokeStyle = "rgba(233,230,223,.035)"; ctx.stroke();
+      }
+    }
+    for (const p of rims) {
+      p.offset += oSpeed * dt;
+      p.holes.forEach((hd, i) => {
+        const [hx, hy, ang] = rimAt(p, p.offset + i * p.step);
+        const dx = hx - mouse.x, dy = hy - mouse.y, dist = Math.hypot(dx, dy);
+        const f = Math.max(0, 1 - dist / REACH), e = f * f;
+        hd.lx += ((dist ? dx / dist : 0) * e * PUSH - hd.lx) * 0.12;
+        hd.ly += ((dist ? dy / dist : 0) * e * PUSH - hd.ly) * 0.12;
+        hd.glow += (f - hd.glow) * 0.1;
+        ctx.globalAlpha = Math.min(1, 0.62 + hd.glow * 0.5);
+        ctx.fillStyle = hd.glow > 0.05 ? "#fff" : "#e9e6df";
+        const grow = 1 + hd.glow * 0.35, w = HOLE_W * K * grow, hh = HOLE_H * K * grow;
+        ctx.save(); ctx.translate(hx + hd.lx, hy + hd.ly); ctx.rotate(ang);
+        ctx.beginPath(); ctx.roundRect(-w / 2, -hh / 2, w, hh, ROUND * K); ctx.fill();
+        ctx.restore();
+      });
+    }
+  }
+
+  function nearest() {
+    let best = null, bd = Infinity;
+    for (const h of hits) { const d = Math.hypot(h.x - mouse.x, h.y - mouse.y); if (d < h.r && d < bd) { bd = d; best = h; } }
+    return best && ctx.isPointInPath(outline, mouse.x * (devicePixelRatio || 1), mouse.y * (devicePixelRatio || 1)) ? best : null;
+  }
+
+  // click a frame → open that still large, in colour, with its story
+  const lb = document.getElementById("lightbox");
+  cv.addEventListener("click", () => {
+    const h = nearest(); if (!h) return;
+    lb.querySelector("img").src = h.f.src; lb.querySelector("p").textContent = h.f.caption;
+    lb.classList.add("show");
+  });
+  lb.addEventListener("click", () => lb.classList.remove("show"));
+
+  const move = e => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; over = true; };
+  cv.addEventListener("pointermove", move);
+  cv.addEventListener("pointerdown", move);
+  cv.addEventListener("pointerleave", () => { mouse = { x: -1e4, y: -1e4 }; over = false; });
+  addEventListener("resize", build);
+  build(); requestAnimationFrame(frame);
+
+  // ---- Menu ----
+  const body = document.body;
+  const open = () => body.classList.add("open");
+  const close = () => body.classList.remove("open");
+  openBtn.onclick = open; closeBtn.onclick = close; scrim.onclick = close;
+  addEventListener("keydown", e => e.key === "Escape" && close());
+
+  document.querySelectorAll(".item .head").forEach(btn => {
+    btn.onclick = () => {
+      const item = btn.parentElement, wasOpen = item.classList.contains("is-open");
+      document.querySelectorAll(".item").forEach(i => { i.classList.remove("is-open"); i.querySelector(".head").setAttribute("aria-expanded","false"); });
+      if (!wasOpen) { item.classList.add("is-open"); btn.setAttribute("aria-expanded","true"); }
+    };
+  });
+  document.querySelectorAll(".plain a").forEach(l => l.onclick = close);
+</script>
+</body>
+</html>
