@@ -3,17 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flattery Films Hero</title>
+<title>Flattery Films</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-  :root{
-    --bg:#08090a; --ink:#e9e6df; --dim:rgba(233,230,223,.55);
-    --line:rgba(233,230,223,.14); --panel:#0b0c0d;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--ink);font-family:"Jost",system-ui,sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
-
   /* hero + emblem */
   .hero{min-height:100vh;display:grid;place-items:center}
   #logo{width:min(86vmin,720px);aspect-ratio:1;display:block;touch-action:none}
@@ -24,53 +18,10 @@
   .lightbox img{max-width:100%;max-height:72vh;display:block;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}
   .lightbox p{margin-top:22px;color:var(--dim);font-size:14px;letter-spacing:.08em;line-height:1.7}
 
-  /* menu button */
-  .burger{position:fixed;top:28px;right:32px;z-index:30;background:none;border:0;cursor:pointer;
-    color:var(--ink);display:flex;align-items:center;gap:14px;font:inherit;font-size:11px;letter-spacing:.35em}
-  .burger i{display:block;width:26px;height:1px;background:currentColor;position:relative}
-  .burger i::after{content:"";position:absolute;left:0;top:7px;width:26px;height:1px;background:currentColor}
-
-  /* overlay */
-  .nav{position:fixed;inset:0 auto 0 0;width:min(560px,100%);background:var(--panel);z-index:40;
-    transform:translateX(-100%);transition:transform .7s cubic-bezier(.7,0,.2,1);overflow-y:auto;
-    box-shadow:0 0 80px rgba(0,0,0,.8)}
-  .open .nav{transform:none}
-  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .6s;z-index:35}
-  .open .scrim{opacity:1;pointer-events:auto}
-  .close{position:absolute;top:28px;right:32px;width:22px;height:22px;background:none;border:0;cursor:pointer}
-  .close::before,.close::after{content:"";position:absolute;left:0;top:50%;width:100%;height:1px;background:var(--ink);transform:rotate(45deg)}
-  .close::after{transform:rotate(-45deg)}
-
-  .list{margin-top:120px;border-top:1px solid var(--line)}
-  .item{border-bottom:1px solid var(--line)}
-  .head{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;color:var(--ink);
-    cursor:pointer;padding:30px 44px;font:inherit;font-size:15px;letter-spacing:.42em;text-align:left;transition:color .3s}
-  .head:hover{color:#fff}
-  .chev{width:9px;height:9px;border-right:1px solid var(--dim);border-bottom:1px solid var(--dim);transform:rotate(45deg) translateY(-3px);transition:transform .4s}
-  .item.is-open .chev{transform:rotate(-135deg) translateY(-3px)}
-  .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s ease}
-  .item.is-open .body{grid-template-rows:1fr}
-  .body>div{overflow:hidden}
-  .inner{padding:0 44px 34px;color:var(--dim);font-size:14px;line-height:1.7;letter-spacing:.03em}
-  .stills{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
-  .stills figure{aspect-ratio:3/4;background:linear-gradient(160deg,#25272a,#121314);position:relative}
-  .stills figcaption{position:absolute;left:0;bottom:-20px;font-size:10px;letter-spacing:.25em}
-  .stills{padding-bottom:20px}
-
-  .plain{list-style:none;padding:36px 44px}
-  .plain a{display:inline-block;color:var(--ink);text-decoration:none;font-size:15px;letter-spacing:.42em;padding:9px 0;transition:opacity .3s}
-  .plain a:hover{opacity:.6}
-
-  @media (max-width:560px){
-    .head,.plain{padding-left:24px;padding-right:24px}
-    .inner{padding:0 24px 30px}
-    .burger{right:20px}.close{right:20px}
-  }
 </style>
 </head>
 <body>
 
-<button class="burger" id="openBtn" aria-label="Open menu">MENU <i></i></button>
 
 <main class="hero">
   <canvas id="logo" aria-label="Flattery Films logo as a moving film strip"></canvas>
@@ -78,42 +29,6 @@
 <div class="lightbox" id="lightbox"><figure><img alt=""><p></p></figure></div>
 
 
-<div class="scrim" id="scrim"></div>
-<nav class="nav" aria-label="Main">
-  <button class="close" id="closeBtn" aria-label="Close menu"></button>
-
-  <div class="list">
-    <div class="item">
-      <button class="head" aria-expanded="false">WHAT <span class="chev"></span></button>
-      <div class="body"><div><div class="inner">
-        <div class="stills">
-          <figure><figcaption>SHELTER</figcaption></figure>
-          <figure><figcaption>SLEEPING ROUGH</figcaption></figure>
-          <figure><figcaption>THIN SPACE</figcaption></figure>
-        </div>
-      </div></div></div>
-    </div>
-    <div class="item">
-      <button class="head" aria-expanded="false">WHY <span class="chev"></span></button>
-      <div class="body"><div><div class="inner">
-        Flattery will get you everywhere. Attention and the right questions reveal people's authentic beauty.
-      </div></div></div>
-    </div>
-    <div class="item">
-      <button class="head" aria-expanded="false">WHERE <span class="chev"></span></button>
-      <div class="body"><div><div class="inner">Florida · England · wherever the story is.</div></div></div>
-    </div>
-    <div class="item">
-      <button class="head" aria-expanded="false">WHO <span class="chev"></span></button>
-      <div class="body"><div><div class="inner">Will Beaucher, filmmaker. A short bio goes here.</div></div></div>
-    </div>
-  </div>
-
-  <ul class="plain">
-    <li><a href="#mood">MOOD</a></li>
-    <li><a href="#contact">CONTACT</a></li>
-  </ul>
-</nav>
 
 <script>
   // =====================================================================
@@ -387,21 +302,7 @@
   addEventListener("resize", build);
   build(); requestAnimationFrame(frame);
 
-  // ---- Menu ----
-  const body = document.body;
-  const open = () => body.classList.add("open");
-  const close = () => body.classList.remove("open");
-  openBtn.onclick = open; closeBtn.onclick = close; scrim.onclick = close;
-  addEventListener("keydown", e => e.key === "Escape" && close());
-
-  document.querySelectorAll(".item .head").forEach(btn => {
-    btn.onclick = () => {
-      const item = btn.parentElement, wasOpen = item.classList.contains("is-open");
-      document.querySelectorAll(".item").forEach(i => { i.classList.remove("is-open"); i.querySelector(".head").setAttribute("aria-expanded","false"); });
-      if (!wasOpen) { item.classList.add("is-open"); btn.setAttribute("aria-expanded","true"); }
-    };
-  });
-  document.querySelectorAll(".plain a").forEach(l => l.onclick = close);
 </script>
+<script src="assets/site.js"></script>
 </body>
 </html>
