@@ -2,7 +2,7 @@
    FLATTERY FILMS — shared styles (every page loads this file)
    ===================================================================== */
 :root{
-  --bg:#08090a; --ink:#e9e6df; --dim:rgba(233,230,223,.55); --faint:rgba(233,230,223,.32);
+  --bg:#08090a; --ink:#e9e6df; --dim:rgba(233,230,223,.65); --faint:rgba(233,230,223,.42);
   --line:rgba(233,230,223,.14); --panel:#0b0c0d; --red:#A30101;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -11,7 +11,7 @@ a{color:inherit}
 
 /* wordmark — always links home */
 .wordmark{position:fixed;top:26px;left:50%;transform:translateX(-50%);z-index:30;
-  color:var(--red);text-decoration:none;font-weight:300;font-size:24px;letter-spacing:.75em;padding-left:.62em;
+  color:var(--red);text-decoration:none;font-weight:300;font-size:28px;letter-spacing:.75em;padding-left:.52em;
   white-space:nowrap;transition:opacity .4s}
 .wordmark:hover{opacity:.75}
 .open .wordmark{opacity:0;pointer-events:none}
