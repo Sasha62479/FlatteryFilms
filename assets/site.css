@@ -10,7 +10,7 @@ body{background:var(--bg);color:var(--ink);font-family:"Jost",system-ui,sans-ser
 a{color:inherit}
 
 /* wordmark — always links home */
-.wordmark{position:fixed;top:26px;left:50%;transform:translateX(-50%);z-index:30;
+.wordmark{position:fixed;top:29px;left:50%;transform:translateX(-50%);z-index:30;
   color:var(--red);text-decoration:none;font-weight:400;font-size:15px;letter-spacing:.62em;padding-left:.62em;
   white-space:nowrap;transition:opacity .4s}
 .wordmark:hover{opacity:.75}
