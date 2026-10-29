@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -38,40 +39,39 @@
   // 1) YOUR STILLS — image paths/URLs, with the story for each.
   //    Leave empty to see the placeholder frames.
   const STILLS = [
-   
+    // ⚠ Check this first link: upload the photo to CodePen Assets and paste its real link here if it differs. { src:"https://assets.codepen.io/14693322/5I9A9838.jpg", caption: "Thin Space — Scotland." },
+    { src:"https://assets.codepen.io/14693322/Image+3-10-24+at+10.40%E2%80%AFAM.jpg", caption: "Alaska — U.S." },
     { src: "https://assets.codepen.io/14693322/Thin-Space-Pat-Muldoon-Murphy-D2-0125320077.jpg", caption: "Thin Space — Pat Muldoon." },
     { src: "https://assets.codepen.io/14693322/Thin_Space_Sean_Murphy_Mexico_0924_D12262651.jpg", caption: "Thin Space — Mexico." },
     { src: "https://assets.codepen.io/14693322/Thin-Space-Eric-Pall300077adino-Sean-Murphy-D5-CostaRica-1124.jpg", caption: "Thin Space — Costa Rica." },
     { src: "https://assets.codepen.io/14693322/Thin-Space-Scotland-Sean-Murphy-D5-052547463.jpg", caption: "Thin Space — Scotland." },
     { src: "https://assets.codepen.io/14693322/Thin-Space-Scotland-Sean-Murphy-D1Leica-052536906.jpg", caption: "Thin Space — Scotland." },
-    { src: "https://assets.codepen.io/14693322/Thin-Space-Scotland-Sean-Murphy-D2-052537900.jpg", caption: "Thin Space — Scotland." },      
-  { src:"https://assets.codepen.io/14693322/5I9A9838.jpg", caption: "Thin Space — Scotland." },
-     { src:"https://assets.codepen.io/14693322/Image+3-10-24+at+10.40%E2%80%AFAM.jpg", caption: "Alaska — U.S." },
+    { src: "https://assets.codepen.io/14693322/Thin-Space-Scotland-Sean-Murphy-D2-052537900.jpg", caption: "Thin Space — Scotland." },
   ];
 
   // 2) LOOK & FEEL
   const SPEED       = 14;   // film speed, px per second (0 = still)
   const HOVER_SPEED = 2;    // speed while the cursor is on the logo (slows so you can pick a frame)
-  const IDLE_ALPHA  = 1;  // brightness of the black-and-white frames at rest (0–1)
-  const COLOR_REACH = 1.6;  // how far the colour spreads from the cursor, in frame-widths
+  const IDLE_ALPHA  = 0.5;  // brightness of the black-and-white frames at rest (0–1)
+  const COLOR_REACH = 1.3;  // how far the colour spreads from the cursor, in frame-widths
 
   // 3) OUTLINE — the film-strip outline around the logo (sizes are px at a 520px-wide logo; they scale with it)
-  const GAP    = 10.5;   // px from one perforation to the next
-  const HOLE_W = 4;   // perforation length (along the outline), px
-  const HOLE_H = 6;     // perforation height (across the outline), px
+  const GAP    = 8.5;   // px from one perforation to the next
+  const HOLE_W = 3.4;   // perforation length (along the outline), px
+  const HOLE_H = 5;     // perforation height (across the outline), px
   const ROUND  = 0.9;   // corner rounding of each perforation, px
   const OUTLINE_SPEED       = 6;   // how fast the outline runs, px per second
-  const OUTLINE_HOVER_SPEED = 6;  // outline speed while the cursor is on the logo
-  const REACH  = 100;    // cursor influence radius, px
-  const PUSH   = 5;    // how far perforations lift away from the cursor, px
-  const BAND   = 15;    // width of the faint film strip under the holes, px (0 = none)
+  const OUTLINE_HOVER_SPEED = 40;  // outline speed while the cursor is on the logo
+  const REACH  = 80;    // cursor influence radius, px
+  const PUSH   = 10;    // how far perforations lift away from the cursor, px
+  const BAND   = 12;    // width of the faint film strip under the holes, px (0 = none)
 
   // Logo outline traced from the artwork, centred on 0,0, scaled to 1.
   const SHAPES = [[[0.5, -0.4188], [0.3375, -0.2563], [0.3347, -0.2563], [0.3333, 0.3291], [0.035, 0.3291], [0.0336, 0.0462], [-0.0952, 0.1751], [-0.098, 0.3291], [-0.2507, 0.3291], [-0.416, 0.4944], [0.4034, 0.4944], [0.4286, 0.4888], [0.4594, 0.472], [0.4846, 0.444], [0.4958, 0.4202], [0.5, 0.402]], [[0.4146, -0.4944], [-0.3978, -0.4944], [-0.4216, -0.4902], [-0.4426, -0.4818], [-0.4594, -0.4706], [-0.4762, -0.4538], [-0.4916, -0.4272], [-0.4986, -0.402], [-0.4986, 0.4216], [-0.3347, 0.2577], [-0.3347, 0.105], [-0.3319, 0.1022], [-0.1807, 0.1022], [-0.0518, -0.0266], [-0.3347, -0.0294], [-0.3347, -0.3277], [0.2521, -0.3291], [0.2521, -0.3319]]];
   // The film's path through each bar of the logo (centre line + bar width), same units.
   // piece = which half of the logo the film stays inside (0 = right/bottom half, 1 = top/left half).
   const ROUTES = [
-    { w: 0.132, pts: [[-0.417, 0.0365], [0.06, 0.0365]], piece: 1, clip: [-0.335, -1, 1, 1] },  // F middle arm (starts at the left bar's inner edge)
+    { w: 0.131, pts: [[-0.417, 0.0365], [0.06, 0.0365]], piece: 1, clip: [-0.335, -1, 1, 1] },  // F middle arm (starts at the left bar's inner edge)
     { w: 0.133, pts: [[-0.0315, 0.4115], [-0.0315, -0.06]], piece: 0, clip: [-1, -1, 1, 0.329] }, // inner stem (starts at the bottom bar's top edge)
     { w: 0.165, pts: [[0.52, -0.4115], [-0.417, -0.4115], [-0.417, 0.53]], piece: 1 },  // top bar → left bar
     { w: 0.166, pts: [[0.4165, -0.53], [0.4165, 0.4115], [-0.53, 0.4115]], piece: 0 },  // right bar → bottom bar
@@ -180,11 +180,11 @@
     });
     routes = ROUTES.map((rt, ri) => {
       const w = rt.w * L, S = sample(rt.pts.map(P), w / 2);
-      const m = w * 0.18;                              // dark margin each side of the pictures
-      const fh = w - 2 * m, fl = fh * 1.3, gap = fh * 0.15; // frame across / along / gap
+      const m = w * 0.13;                              // dark margin each side of the pictures
+      const fh = w - 2 * m, fl = fh * 1.3, gap = fh * 0.1; // frame across / along / gap
       const cl = rt.clip && [P([rt.clip[0], rt.clip[1]]), P([rt.clip[2], rt.clip[3]])];
       return { ri, w, r: w / 2, S, cl, piece: rt.piece, len: S[S.length - 1].s, offset: 0, m, fh, fl, pitch: fl + gap,
-               hole: { along: w * 0.08, across: w * 0.075, pitch: w * 0.14 } };
+               hole: { along: w * 0.05, across: w * 0.075, pitch: w * 0.14 } };
     });
   }
 
@@ -196,14 +196,14 @@
     ctx.fillStyle = "#101113"; ctx.fill(outline);
 
     for (const R of routes) {
-      R.offset -= speed * dt;
+      R.offset += speed * dt;
       ctx.save();
       ctx.clip(pieces[R.piece]);                  // keep this film inside its own half of the logo
       if (R.cl) { ctx.beginPath(); ctx.rect(R.cl[0][0], R.cl[0][1], R.cl[1][0] - R.cl[0][0], R.cl[1][1] - R.cl[0][1]); ctx.clip(); }
       const span = R.len + R.pitch * 2, n = Math.ceil(span / R.pitch), loop = n * R.pitch;
       // frames
       for (let i = 0; i < n; i++) {
-        const s = (((R.offset + i * R.pitch) % loop + loop) % loop) - R.pitch;
+        const s = ((R.offset + i * R.pitch) % loop) - R.pitch;
         if (s < -R.fl || s > R.len + R.fl) continue;
         const p = at(R, s), f = frames[(i + R.ri * 2) % frames.length], key = R.ri + ":" + i;
         const d = Math.hypot(p.x - mouse.x, p.y - mouse.y);
@@ -304,6 +304,6 @@
   build(); requestAnimationFrame(frame);
 
 </script>
-<script src="./script.js"></script>
+<script src="assets/site.js"></script>
 </body>
 </html>
