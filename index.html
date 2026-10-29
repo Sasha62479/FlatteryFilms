@@ -272,7 +272,7 @@
         hd.ly += ((dist ? dy / dist : 0) * e * PUSH - hd.ly) * 0.12;
         hd.glow += (f - hd.glow) * 0.1;
         ctx.globalAlpha = Math.min(1, 0.62 + hd.glow * 0.5);
-        ctx.fillStyle = hd.glow > 0.05 ? "#fff" : "#e9e6df";
+        ctx.fillStyle = hd.glow > 0.05 ? "#fff" : "#A30101";
         const grow = 1 + hd.glow * 0.35, w = HOLE_W * K * grow, hh = HOLE_H * K * grow;
         ctx.save(); ctx.translate(hx + hd.lx, hy + hd.ly); ctx.rotate(ang);
         ctx.beginPath(); ctx.roundRect(-w / 2, -hh / 2, w, hh, ROUND * K); ctx.fill();
