@@ -196,7 +196,7 @@
     ctx.fillStyle = "#101113"; ctx.fill(outline);
 
     for (const R of routes) {
-      R.offset += speed * dt;
+      R.offset -= speed * dt;
       ctx.save();
       ctx.clip(pieces[R.piece]);                  // keep this film inside its own half of the logo
       if (R.cl) { ctx.beginPath(); ctx.rect(R.cl[0][0], R.cl[0][1], R.cl[1][0] - R.cl[0][0], R.cl[1][1] - R.cl[0][1]); ctx.clip(); }
