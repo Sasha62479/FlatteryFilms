@@ -205,7 +205,7 @@
       const span = R.len + R.pitch * 2, n = Math.ceil(span / R.pitch), loop = n * R.pitch;
       // frames
       for (let i = 0; i < n; i++) {
-        const s = ((R.offset + i * R.pitch) % loop) - R.pitch;
+        const s = ((((R.offset + i * R.pitch) % loop) + loop) % loop) - R.pitch;
         if (s < -R.fl || s > R.len + R.fl) continue;
         const p = at(R, s), f = frames[(i + R.ri * 2) % frames.length], key = R.ri + ":" + i;
         const d = Math.hypot(p.x - mouse.x, p.y - mouse.y);
