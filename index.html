@@ -70,7 +70,7 @@
   // The film's path through each bar of the logo (centre line + bar width), same units.
   // piece = which half of the logo the film stays inside (0 = right/bottom half, 1 = top/left half).
   const ROUTES = [
-    { w: 0.131, pts: [[-0.417, 0.0365], [0.06, 0.0365]], piece: 1, clip: [-0.335, -1, 1, 1] },  // F middle arm (starts at the left bar's inner edge)
+    { w: 0.132, pts: [[-0.417, 0.0365], [0.06, 0.0365]], piece: 1, clip: [-0.335, -1, 1, 1] },  // F middle arm (starts at the left bar's inner edge)
     { w: 0.133, pts: [[-0.0315, 0.4115], [-0.0315, -0.06]], piece: 0, clip: [-1, -1, 1, 0.329] }, // inner stem (starts at the bottom bar's top edge)
     { w: 0.165, pts: [[0.52, -0.4115], [-0.417, -0.4115], [-0.417, 0.53]], piece: 1 },  // top bar → left bar
     { w: 0.166, pts: [[0.4165, -0.53], [0.4165, 0.4115], [-0.53, 0.4115]], piece: 0 },  // right bar → bottom bar
@@ -179,11 +179,11 @@
     });
     routes = ROUTES.map((rt, ri) => {
       const w = rt.w * L, S = sample(rt.pts.map(P), w / 2);
-      const m = w * 0.13;                              // dark margin each side of the pictures
-      const fh = w - 2 * m, fl = fh * 1.3, gap = fh * 0.1; // frame across / along / gap
+      const m = w * 0.18;                              // dark margin each side of the pictures
+      const fh = w - 2 * m, fl = fh * 1.3, gap = fh * 0.15; // frame across / along / gap
       const cl = rt.clip && [P([rt.clip[0], rt.clip[1]]), P([rt.clip[2], rt.clip[3]])];
       return { ri, w, r: w / 2, S, cl, piece: rt.piece, len: S[S.length - 1].s, offset: 0, m, fh, fl, pitch: fl + gap,
-               hole: { along: w * 0.05, across: w * 0.075, pitch: w * 0.14 } };
+               hole: { along: w * 0.08, across: w * 0.075, pitch: w * 0.14 } };
     });
   }
 
@@ -195,14 +195,14 @@
     ctx.fillStyle = "#101113"; ctx.fill(outline);
 
     for (const R of routes) {
-      R.offset += speed * dt;
+      R.offset -= speed * dt;
       ctx.save();
       ctx.clip(pieces[R.piece]);                  // keep this film inside its own half of the logo
       if (R.cl) { ctx.beginPath(); ctx.rect(R.cl[0][0], R.cl[0][1], R.cl[1][0] - R.cl[0][0], R.cl[1][1] - R.cl[0][1]); ctx.clip(); }
       const span = R.len + R.pitch * 2, n = Math.ceil(span / R.pitch), loop = n * R.pitch;
       // frames
       for (let i = 0; i < n; i++) {
-        const s = ((R.offset + i * R.pitch) % loop) - R.pitch;
+        const s = (((R.offset + i * R.pitch) % loop + loop) % loop) - R.pitch;
         if (s < -R.fl || s > R.len + R.fl) continue;
         const p = at(R, s), f = frames[(i + R.ri * 2) % frames.length], key = R.ri + ":" + i;
         const d = Math.hypot(p.x - mouse.x, p.y - mouse.y);
@@ -303,6 +303,6 @@
   build(); requestAnimationFrame(frame);
 
 </script>
-<script src="assets/site.js"></script>
+<script src="./script.js"></script>
 </body>
 </html>
