@@ -55,3 +55,7 @@ All images live in the repo (no outside links), so nothing breaks when the domai
 - `assets/img/stills/` — chapter stills + page backgrounds, ≤ 2400×1600, under ~480 KB, named by id (`thin-space-scotland-bagpiper.jpg`)
 - `assets/img/home/` — the home film strip, 1600 px on the long side
 - `assets/img/team/` — headshots named by person id (`wil.jpg`, `dani.jpg` …). Used full-screen on Who **and** as the 3:4 grayscale thumbnail in the menu; `pos` (e.g. `50% 30%`) picks the crop.
+
+## Moving between pages
+Home → What → Why → Who reads like one story: the last screen of each page shows the next page's opening photo, and scrolling past it glides into that page (clicking works too). Who ends with a link back to the start. Set it up on a page by adding an `<a class="next-page">` block at the end (see what/index.html); the behaviour lives in `assets/site.js`.
+Once you scroll, a dark bar fades in behind the wordmark and MENU so they never sit on a busy photo.

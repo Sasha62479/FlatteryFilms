@@ -16,6 +16,18 @@ a{color:inherit}
 .wordmark:hover{opacity:.75}
 .open .wordmark{opacity:0;pointer-events:none}
 
+/* top bar — fades in behind the wordmark + MENU once you scroll, so they never sit on a busy photo */
+.topbar{position:fixed;inset:0 0 auto 0;height:84px;z-index:25;pointer-events:none;
+  background:rgba(8,9,10,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);opacity:0;transition:opacity .45s ease}
+.scrolled .topbar{opacity:1}
+.open .topbar{opacity:0}
+
+/* page arrives softly, and fades out when gliding to the next page */
+body{animation:arrive .7s ease}
+@keyframes arrive{from{opacity:0}}
+body.leaving{opacity:0;transition:opacity .45s ease}
+
 /* menu button */
 .burger{position:fixed;top:28px;right:32px;z-index:30;background:none;border:0;cursor:pointer;
   color:var(--ink);display:flex;align-items:center;gap:14px;font:inherit;font-size:11px;letter-spacing:.35em}
@@ -59,6 +71,7 @@ a{color:inherit}
 .soon::after{content:" · soon";font-size:10px;letter-spacing:.25em}
 
 @media (max-width:560px){
+  .topbar{height:72px}
   .wordmark{font-size:12px;letter-spacing:.42em;padding-left:.42em;top:30px;left:24px;transform:none}
   .head,.plain{padding-left:24px;padding-right:24px}
   .inner{padding:0 24px 30px}
@@ -110,3 +123,21 @@ a{color:inherit}
 
 @media (max-width:560px){ .page{padding:130px 24px 100px} .page-hero{height:46vh} .page-hero + .page{margin-top:-40px} }
 @media (prefers-reduced-motion:reduce){ .page{animation:none} }
+
+/* =====================================================================
+   NEXT PAGE — the last screen of a page shows the next page's opening
+   photo. Keep scrolling: the red line fills and the site glides on.
+   (The logic lives in site.js; clicking works too.)
+   ===================================================================== */
+.next-page{position:relative;display:grid;place-items:center;min-height:100vh;margin-top:60px;
+  color:var(--ink);text-decoration:none;background:#111 center/cover no-repeat;background-position:var(--pos,center)}
+.next-page::before{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,var(--bg) 0%,rgba(8,9,10,.6) 30%,rgba(8,9,10,.5) 100%)}
+.next-inner{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px}
+.next-kicker{font-size:11px;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:26px}
+.next-kicker::before{content:"";display:inline-block;width:26px;height:1px;background:var(--red);vertical-align:middle;margin-right:14px}
+.next-title{font-weight:300;font-size:clamp(28px,5vw,62px);line-height:1.2;letter-spacing:.24em;text-transform:uppercase}
+.next-hint{margin-top:34px;font-size:10px;letter-spacing:.38em;color:var(--dim);text-transform:uppercase}
+.next-bar{display:block;width:160px;height:1px;margin-top:16px;background:var(--line);overflow:hidden}
+.next-fill{display:block;height:100%;background:var(--red);transform:scaleX(0);transform-origin:left}
+@media (prefers-reduced-motion:reduce){ body{animation:none} }

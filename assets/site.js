@@ -47,6 +47,7 @@
     </div>`;
 
   document.body.insertAdjacentHTML("afterbegin", `
+    <div class="topbar" aria-hidden="true"></div>
     <a class="wordmark" href="${ROOT}" aria-label="Flattery Films — home">FLATTERY FILMS</a>
     <button class="burger" id="openBtn" aria-label="Open menu">MENU <i></i></button>
     <div class="scrim" id="scrim"></div>
@@ -68,4 +69,28 @@
     document.querySelectorAll(".item").forEach(i => { i.classList.remove("is-open"); i.querySelector(".head").setAttribute("aria-expanded", "false"); });
     if (!was) { it.classList.add("is-open"); btn.setAttribute("aria-expanded", "true"); }
   });
+
+  // ---- top bar: show the dark strip behind the wordmark once the page has scrolled ----
+  const onScrollBar = () => body.classList.toggle("scrolled", scrollY > 30);
+  addEventListener("scroll", onScrollBar, { passive: true }); onScrollBar();
+
+  // ---- glide to the next page: when the .next-page screen is fully scrolled into view, go there ----
+  const next = document.querySelector(".next-page");
+  if (next) {
+    const fill = next.querySelector(".next-fill");
+    let armed = false, going = false;          // "armed" = the reader has scrolled toward it, not just landed on it
+    const go = () => { if (going) return; going = true; body.classList.add("leaving"); setTimeout(() => location.href = next.href, 450); };
+    const check = () => {
+      const r = next.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (innerHeight - r.top) / r.height));   // 0 = just appearing, 1 = fills the screen
+      if (fill) fill.style.transform = `scaleX(${p})`;
+      if (p < 0.6) armed = true;
+      if (armed && p > 0.97) go();
+    };
+    next.addEventListener("click", e => { e.preventDefault(); go(); });
+    addEventListener("scroll", check, { passive: true });
+    // coming back with the Back button: don't bounce straight forward again
+    addEventListener("pageshow", () => { going = false; armed = false; body.classList.remove("leaving"); check(); });
+    check();
+  }
 })();
