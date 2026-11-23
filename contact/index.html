@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Contact — Flattery Films</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  /* one screen: photo behind, contact details in the middle */
+  .contact{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;padding:120px 24px;
+    background:#111 center/cover no-repeat;background-position:var(--pos,center)}
+  .contact::before{content:"";position:absolute;inset:0;background:rgba(8,9,10,.72)}
+  .contact > div{position:relative}
+  .contact h1{font-weight:300;font-size:clamp(28px,4vw,48px);letter-spacing:.24em;text-transform:uppercase;margin-bottom:44px}
+  .contact .email{font-size:clamp(16px,2vw,22px);letter-spacing:.12em;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--red);padding-bottom:6px}
+  .social{display:flex;gap:34px;justify-content:center;flex-wrap:wrap;margin-top:52px}
+  .social a{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .3s}
+  .social a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<main class="contact" style="background-image:url('../assets/img/stills/thin-space-scotland-bagpiper.jpg');--pos:50% 40%">
+  <div>
+    <h1>Contact</h1>
+    <a class="email" href="mailto:info@flatteryfilms.com">info@flatteryfilms.com</a>
+    <div class="social">
+      <a href="https://www.instagram.com/flatteryfilm/">Instagram</a>
+      <a href="https://www.facebook.com/profile.php?id=61555957708445">Facebook</a>
+      <a href="https://www.youtube.com/channel/UC7BpuoFglPkq3mGoRgTgWfw">YouTube</a>
+    </div>
+  </div>
+</main>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

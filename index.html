@@ -10,9 +10,98 @@
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
 <style>
-  /* hero + emblem */
-  .hero{min-height:100vh;display:grid;place-items:center}
+  /* =====================================================================
+     HOME — one continuous scroll story (same feel as the Thin Space page)
+     ===================================================================== */
+  html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+
+  /* background scenes: fixed photos that crossfade, with a slow settle (like Thin Space) */
+  #scenes{position:fixed;inset:0;z-index:-1;background:var(--bg)}
+  .scene{position:absolute;inset:0;background:#0d0e10 center/cover no-repeat;background-position:var(--pos,center);
+    opacity:0;transform:scale(1.08);transition:opacity 1.4s ease, transform 9s ease-out;filter:saturate(1.05) contrast(1.06) brightness(.9)}
+  .scene.on{opacity:1;transform:scale(1)}
+  .grain{position:fixed;inset:-50%;z-index:-1;pointer-events:none;opacity:.06;animation:grain 1.2s steps(6) infinite;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
+
+  /* logo + statement (black, no photo behind) */
+  .hero{min-height:100vh;display:grid;place-items:center;background:var(--bg);scroll-snap-align:start}
   #logo{width:min(86vmin,720px);aspect-ratio:1;display:block;touch-action:none}
+  .statement{position:relative;min-height:100vh;display:grid;place-items:center;padding:120px 32px;text-align:center;background:var(--bg);scroll-snap-align:start}
+  .statement .big{max-width:920px;font-size:clamp(17px,2.1vw,25px);line-height:1.85;letter-spacing:.16em;text-transform:uppercase}
+  .statement .tagline{margin-top:52px;color:var(--red);font-size:13px;letter-spacing:.5em;text-transform:uppercase}
+  .scroll-cue{position:absolute;left:50%;bottom:34px;transform:translateX(-50%)}
+  .pill{display:block;width:13px;height:24px;border:1px solid var(--faint);border-radius:8px;position:relative}
+  .pill::after{content:"";position:absolute;left:50%;top:4px;width:3px;height:5px;margin-left:-1.5px;border-radius:2px;background:var(--ink);animation:pill 2s ease-in-out infinite}
+  @keyframes pill{0%{transform:translateY(0);opacity:1}70%{transform:translateY(9px);opacity:0}100%{opacity:0}}
+
+  /* opening screen of each section: photo fills the screen, title sits bottom-left (like a Thin Space chapter) */
+  .opening{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:140px 7vw 17vh;scroll-snap-align:start}
+  .opening::before,.person::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(90deg,rgba(6,6,7,.85) 0%,rgba(6,6,7,.45) 42%,rgba(6,6,7,0) 70%),
+               radial-gradient(ellipse at center,rgba(0,0,0,0) 45%,rgba(0,0,0,.55) 100%)}
+  .op-copy,.person-copy{position:relative;max-width:560px}
+  .kicker{font-size:11px;letter-spacing:.38em;color:var(--dim);margin-bottom:22px;text-transform:uppercase}
+  .kicker::before{content:"";display:inline-block;width:26px;height:1px;background:var(--red);vertical-align:middle;margin-right:14px}
+  .opening h2,.person h2{font-weight:300;font-size:clamp(28px,4vw,52px);line-height:1.25;letter-spacing:.5em;text-transform:uppercase;margin-bottom:26px;
+    transition:letter-spacing 1.6s cubic-bezier(.2,.7,.2,1)}
+  .reveal.on h2{letter-spacing:.24em}
+  .opening .lede{font-size:clamp(15px,1.5vw,18px);line-height:1.8;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+
+  /* reading part: the photo stays behind, darkened, while the words scroll over it */
+  .reading{position:relative;padding:22vh 32px 26vh;
+    background:linear-gradient(180deg,rgba(8,9,10,0) 0,rgba(8,9,10,.88) 20vh,rgba(8,9,10,.88) calc(100% - 20vh),rgba(8,9,10,0) 100%)}
+  .col{max-width:760px;margin:0 auto}
+  .col p{font-size:16px;line-height:1.9;letter-spacing:.03em;color:rgba(233,230,223,.8);margin-bottom:24px}
+  .col h3{font-weight:300;font-size:11px;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin:64px 0 0}
+  .col cite{font-style:italic;color:var(--ink)}
+  .col cite a{text-decoration:none;border-bottom:1px solid var(--red)}
+  .col .closing{font-size:clamp(15px,1.6vw,18px);line-height:1.8;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);
+    margin-top:56px;padding-top:30px;border-top:1px solid var(--line);background:linear-gradient(var(--red),var(--red)) 0 0/26px 1px no-repeat border-box}
+  .services{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0 36px;margin:22px 0 8px}
+  .services li{padding:15px 0;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim)}
+  .text-link{display:inline-block;margin-top:56px;background:none;border:0;border-bottom:1px solid var(--red);padding:0 0 6px;cursor:pointer;
+    color:var(--ink);font:inherit;font-size:11px;letter-spacing:.38em;text-transform:uppercase;text-decoration:none;transition:opacity .3s}
+  .text-link:hover{opacity:.7}
+
+  /* Where: one big word per screen over its photo */
+  .word{position:relative;min-height:100vh;display:grid;place-items:center;scroll-snap-align:start}
+  .word::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,.35) 0%,rgba(0,0,0,.6) 100%)}
+  .word span{position:relative;font-weight:300;font-size:clamp(44px,10vw,140px);letter-spacing:.5em;padding-left:.5em;text-transform:uppercase;
+    transition:letter-spacing 1.6s cubic-bezier(.2,.7,.2,1), padding 1.6s cubic-bezier(.2,.7,.2,1), opacity .9s ease, transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .word span.on{letter-spacing:.28em;padding-left:.28em}
+
+  /* team: one person per screen */
+  .person{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:140px 7vw 14vh;scroll-snap-align:start}
+  .person p{font-size:15px;line-height:1.85;letter-spacing:.03em;color:rgba(233,230,223,.82);margin-bottom:16px}
+  .person a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--red)}
+  .person cite{font-style:italic}
+
+  /* finale */
+  .finale{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;padding:120px 32px;scroll-snap-align:start}
+  .finale::before{content:"";position:absolute;inset:0;background:rgba(8,9,10,.72)}
+  .finale > div{position:relative}
+  .closing-line{font-size:clamp(17px,2.2vw,26px);line-height:1.8;letter-spacing:.2em;text-transform:uppercase;max-width:860px}
+  .finale-links{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:56px}
+  .finale-links a{color:var(--ink);text-decoration:none;font-size:13px;letter-spacing:.42em;text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--line);transition:border-color .3s}
+  .finale-links a:hover{border-color:var(--red)}
+
+  /* text glides in as it arrives, like the Thin Space chapters */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease, transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .reveal.on{opacity:1;transform:none}
+
+  /* section index on the right (like the Thin Space chapter counter) */
+  .story-index{position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:18px;
+    opacity:0;pointer-events:none;transition:opacity .6s}
+  .in-story .story-index{opacity:1;pointer-events:auto}
+  .open .story-index{opacity:0;pointer-events:none}
+  .story-index a{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--faint);text-decoration:none;text-align:right;transition:color .4s}
+  .story-index a::after{content:"";display:inline-block;width:14px;height:1px;background:currentColor;vertical-align:middle;margin-left:12px;transition:width .4s}
+  .story-index a.on{color:var(--ink)}
+  .story-index a.on::after{width:30px;background:var(--red)}
+
+  /* lightbox for the logo stills */
   .lightbox{position:fixed;inset:0;z-index:50;background:rgba(5,5,6,.92);display:grid;place-items:center;
     opacity:0;pointer-events:none;transition:opacity .5s;cursor:zoom-out;padding:24px}
   .lightbox.show{opacity:1;pointer-events:auto}
@@ -20,37 +109,216 @@
   .lightbox img{max-width:100%;max-height:72vh;display:block;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}
   .lightbox p{margin-top:22px;color:var(--dim);font-size:14px;letter-spacing:.08em;line-height:1.7}
 
-  /* statement under the logo (typed in sentence case, shown in capitals) */
-  .intro{min-height:85vh;display:grid;place-items:center;padding:120px 32px 140px;text-align:center}
-  .intro .statement{max-width:920px;font-size:clamp(17px,2.1vw,25px);line-height:1.85;letter-spacing:.16em;text-transform:uppercase}
-  .intro .tagline{margin-top:52px;color:var(--red);font-size:13px;letter-spacing:.5em;text-transform:uppercase}
-
+  @media (max-width:700px){
+    .opening,.person{padding:120px 24px 13vh}
+    .opening::before,.person::before{background:linear-gradient(0deg,rgba(6,6,7,.92) 0%,rgba(6,6,7,.55) 50%,rgba(6,6,7,.15) 100%)}
+    .reading{padding:16vh 24px 20vh}
+    .story-index{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){ .scene,.reveal,.opening h2,.person h2,.word span{transition:opacity .6s} .grain,.pill::after{animation:none} }
 </style>
 </head>
 <body>
 
+<!-- =====================================================================
+     THE STORY — the whole home page is one continuous scroll, like Thin Space.
+     Each <section> names a background "scene" (data-scene); the matching photo in
+     #scenes crossfades in as the section reaches the middle of the screen.
+     To change a photo, edit the matching line in #scenes below.
+     ===================================================================== -->
+<div id="scenes" aria-hidden="true">
+  <div class="scene" data-scene="what" style="background-image:url('assets/img/stills/thin-space-scotland-dinner-shoot.jpg');--pos:50% 45%"></div>
+  <div class="scene" data-scene="why" style="background-image:url('assets/img/stills/bike-shop-yellow-hat.jpg');--pos:60% 40%"></div>
+  <div class="scene" data-scene="where" style="background-image:url('assets/img/stills/alaska-helicopter-glacier.jpg');--pos:50% 50%"></div>
+  <div class="scene" data-scene="air" style="background-image:url('assets/img/stills/wild-response-helicopter.jpg');--pos:40% 50%"></div>
+  <div class="scene" data-scene="sea" style="background-image:url('assets/img/stills/thin-space-mexico-underwater.jpg');--pos:50% 40%"></div>
+  <div class="scene" data-scene="studio" style="background-image:url('assets/img/stills/sean-murphy-boxing.jpg');--pos:50% 40%"></div>
+  <div class="scene" data-scene="land" style="background-image:url('assets/img/stills/thin-space-scotland-bagpiper.jpg');--pos:50% 40%"></div>
+  <div class="scene" data-scene="who" style="background-image:url('assets/img/stills/sean-murphy-water-softbox.jpg');--pos:50% 55%"></div>
+  <div class="scene" data-scene="wil" style="background-image:url('assets/img/team/wil.jpg');--pos:50% 30%"></div>
+  <div class="scene" data-scene="dani" style="background-image:url('assets/img/team/dani.jpg');--pos:50% 30%"></div>
+  <div class="scene" data-scene="steven" style="background-image:url('assets/img/team/steven.jpg');--pos:50% 30%"></div>
+  <div class="scene" data-scene="suzanne" style="background-image:url('assets/img/team/suzanne.jpg');--pos:50% 30%"></div>
+  <div class="scene" data-scene="sean" style="background-image:url('assets/img/team/sean.jpg');--pos:50% 30%"></div>
+  <div class="scene" data-scene="josh" style="background-image:url('assets/img/team/josh.jpg');--pos:50% 30%"></div>
+  <div class="scene" data-scene="shane" style="background-image:url('assets/img/team/shane.jpg');--pos:50% 30%"></div>
+  <div class="scene" data-scene="end" style="background-image:url('assets/img/stills/thin-space-scotland-kilts-street.jpg');--pos:50% 40%"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
 
-<main class="hero">
+<nav class="story-index" aria-label="Sections">
+  <a href="#what" data-chapter="what">What</a>
+  <a href="#why" data-chapter="why">Why</a>
+  <a href="#where" data-chapter="where">Where</a>
+  <a href="#who" data-chapter="who">Who</a>
+</nav>
+
+<main class="hero" data-scene="none">
   <canvas id="logo" aria-label="Flattery Films logo as a moving film strip"></canvas>
 </main>
-<section class="intro">
-  <div>
-    <p class="statement">Flattery Films turns the power of authentic human storytelling into cinematic experiences that move audiences, forge emotional connections, and leave a lasting impression.</p>
+
+<section class="statement" data-scene="none">
+  <div class="reveal">
+    <p class="big">Flattery Films turns the power of authentic human storytelling into cinematic experiences that move audiences, forge emotional connections, and leave a lasting impression.</p>
     <p class="tagline">Flattery will get you everywhere!</p>
   </div>
+  <a class="scroll-cue" href="#what" aria-label="Scroll to What"><span class="pill"></span></a>
 </section>
-<!-- scroll past the statement to glide into What (handled in assets/site.js) -->
-<a class="next-page" href="what/" style="background-image:url('assets/img/stills/thin-space-scotland-dinner-shoot.jpg');--pos:50% 45%">
-  <span class="next-inner">
-    <span class="next-kicker">Next</span>
-    <span class="next-title">What we do</span>
-    <span class="next-hint">Keep scrolling</span>
-    <span class="next-bar"><i class="next-fill"></i></span>
-  </span>
-</a>
+
+<section class="opening" id="what" data-scene="what" data-chapter="what">
+  <div class="op-copy reveal">
+    <div class="kicker">What</div>
+    <h2>What we do</h2>
+    <p class="lede">Flattery Films is a collective of award-winning directors, cinematographers, and producers united by a shared commitment to meaningful storytelling.</p>
+  </div>
+</section>
+<section class="reading" data-scene="what" data-chapter="what">
+  <div class="col reveal">
+    <p>We create cinematic documentaries and docuseries that explore the honesty, complexity, and beauty of the human experience.</p>
+    <p>We bring that same storytelling sensibility to branded content, creating films that help brands connect with audiences on a deeper, more meaningful level.</p>
+    <p>Whether following extraordinary individuals around the world or partnering with a global brand, our purpose remains the same: to tell stories with integrity, depth, and lasting resonance.</p>
+    <p>We believe great storytelling begins with trust. It’s what allows us to look deeper, connect more honestly, and capture the moments that make a story worth telling.</p>
+    <h3>Services</h3>
+    <ul class="services">
+      <li>Docuseries</li>
+      <li>Full-length docs</li>
+      <li>Full-length features</li>
+      <li>Scripting</li>
+      <li>Talent acquisition</li>
+      <li>Location procurement</li>
+      <li>Voice-over</li>
+      <li>Original scoring</li>
+      <li>Show development</li>
+      <li>Studio and on location</li>
+      <li>Drone</li>
+      <li>Deep sea capabilities</li>
+      <li>BTS</li>
+      <li>Product and marketing stills</li>
+      <li>In-house editing</li>
+      <li>Color correction</li>
+      <li>Sound design</li>
+      <li>Edit direction</li>
+      <li>Original scripting</li>
+      <li>Script rewrites</li>
+    </ul>
+    <a class="text-link" href="projects/">See our projects</a>
+  </div>
+</section>
+<section class="opening" id="why" data-scene="why" data-chapter="why">
+  <div class="op-copy reveal">
+    <div class="kicker">Why</div>
+    <h2>How we connect</h2>
+    <p class="lede">It begins with curiosity.</p>
+  </div>
+</section>
+<section class="reading" data-scene="why" data-chapter="why">
+  <div class="col reveal">
+    <p>The most compelling stories often reveal themselves in unexpected ways. A quiet conversation, an unguarded moment, a simple gesture that says more than the words that follow.</p>
+    <p>We approach every project with an open mind, a genuine curiosity, and a desire to understand the people at their heart, and the experiences at their core. We listen, observe, and allow the story to unfold naturally, discovering the moments of truth that make each film uniquely human.</p>
+    <p class="closing">Because real connection can’t be manufactured. It has to be earned.</p>
+  </div>
+</section>
+<section class="opening" id="where" data-scene="where" data-chapter="where">
+  <div class="op-copy reveal">
+    <div class="kicker">Where</div>
+    <h2>Everywhere!</h2>
+  </div>
+</section>
+<section class="word" data-scene="air" data-chapter="where">
+  <span class="reveal">Air</span>
+</section>
+<section class="word" data-scene="sea" data-chapter="where">
+  <span class="reveal">Sea</span>
+</section>
+<section class="word" data-scene="studio" data-chapter="where">
+  <span class="reveal">Studio</span>
+</section>
+<section class="word" data-scene="land" data-chapter="where">
+  <span class="reveal">Land</span>
+</section>
+<section class="opening" id="who" data-scene="who" data-chapter="who">
+  <div class="op-copy reveal">
+    <div class="kicker">Who</div>
+    <h2>Who we are</h2>
+    <p class="lede">Experience is important, but it’s only the beginning.</p>
+  </div>
+</section>
+<section class="reading" data-scene="who" data-chapter="who">
+  <div class="col reveal">
+    <p>The Flattery Films team brings decades of experience across documentary filmmaking, television, and cinematic branded storytelling, collectively earning more than 20 Emmy nominations, 9 wins, and over a billion views worldwide.</p>
+    <p>Our filmmakers have contributed to some of television’s most recognizable productions, including <cite>The Big Bang Theory</cite>, <cite>Two and a Half Men</cite>, and <cite>The Ellen DeGeneres Show</cite>, while also creating original docuseries such as <cite>Wild Response</cite> and <cite><a href="projects/thin-space/">Thin Space</a></cite>.</p>
+    <p>From feature-length documentaries to short-form branded content, we bring the same creative vision and technical expertise to every project.</p>
+    <p>Our experience may span genres and formats, but what unites us is a shared belief that extraordinary filmmaking begins with a story worth telling.</p>
+  </div>
+</section>
+<!-- the team — headshots: assets/img/team/<id>.jpg (see the #scenes list above for each person's crop) -->
+<section class="person" id="wil" data-scene="wil" data-chapter="who">
+  <div class="person-copy reveal">
+    <div class="kicker">Founding Partner · Writer/Director</div>
+    <h2>Wil Beaucher</h2>
+    <p>Wil Beaucher is a passionate writer/director who has shaped narratives for over two decades. With a rich tapestry of experience, Wil is a seasoned architect of both rewriting existing projects and creating original film and television scripts. His storytelling prowess goes beyond fiction, extending into the dynamic realm of docu-style advertising where he crafts and directs compelling ad campaigns through personal connection. Wil’s ability to weave captivating stories, whether on the big screen or in the succinct moments of a commercial, reflects his deep understanding of the human experience and a commitment to storytelling that resonates to a myriad of target audiences. In the hands of this seasoned creator, narratives come alive, leaving an enduring impact on audiences, and establishing Wil Beaucher as a luminary in the art of visual storytelling.</p>
+  </div>
+</section>
+<section class="person" id="dani" data-scene="dani" data-chapter="who">
+  <div class="person-copy reveal">
+    <div class="kicker">Founding Partner · Executive Producer</div>
+    <h2>Dani Behr</h2>
+    <p>Dani Behr, a seasoned entertainment veteran, boasts an illustrious career spanning over 35 years.</p>
+    <p>Her journey began with acting with acclaimed theatre show producer Cameron Mackintosh, signing a record deal with WEA shortly after with her All-Girl Pop Group and then becoming a household name as a live TV Host. She achieved cult status in her native UK for her late-night show and was recognized with the prestigious ‘Best TV Presenter’ award. Dani continued to thrive across various media platforms, serving as a TV Host, Radio Host, Voice Over Artist, and TV Producer ever since. She has left her mark across all TV genres, collaborating with renowned networks such as ABC, NBCU, FOX, BBC, C4, and ITV.</p>
+    <p>Dubbed the ‘Voice Over Queen’, Dani has lent her voice to numerous brands including the BBC, Virgin Atlantic, and the iconic video game Lara Croft.</p>
+    <p>The Drive-time Radio Host on KISS FM, shared the stage and screen with acclaimed actors like Kate Winslet, Joseph Fiennes, Cate Blanchett, and Oprah Winfrey. Performed at legendary venues such as Wembley Stadium, The Old Vic, and Madison Square Gardens. <a href="https://www.danibehr.com">danibehr.com</a></p>
+    <p>Currently, Dani serves as the Founder &amp; Executive Producer of DBI Entertainment, a dynamic TV &amp; Film Production company dedicated to creating scripted and non-scripted projects for the global marketplace. <a href="https://www.dbi-ent.com">dbi-ent.com</a></p>
+    <p>Additionally, she has recently co-founded Flattery Films, a content creation production company specializing in storytelling through branded documentaries with her award-winning team.</p>
+  </div>
+</section>
+<section class="person" id="steven" data-scene="steven" data-chapter="who">
+  <div class="person-copy reveal">
+    <div class="kicker">Director of Photography · Cinematographer</div>
+    <h2>Steven V. Silver</h2>
+    <p>Meet the visionary behind the lens, Steven V. Silver, a seasoned Director of Photography with an illustrious career adorned by 9 Emmy nominations and 3 Emmy wins. With an extraordinary eye for cinematography, Steven has left an indelible mark on the television landscape. His unparalleled talent has graced hit shows such as <cite>2 1/2 Men</cite>, <cite>Big Bang Theory</cite>, <cite>Moms</cite>, <cite>Dharma and Greg</cite>, and <cite>Murphy Brown</cite>. Steven’s commitment to capturing the essence of each moment has not only earned him critical acclaim but has also played an integral role in defining the visual identity of some of the most beloved sitcoms in television history. With a legacy of excellence, Steven V. Silver continues to illuminate screens and inspire audiences with his unique skill and creativity.</p>
+  </div>
+</section>
+<section class="person" id="suzanne" data-scene="suzanne" data-chapter="who">
+  <div class="person-copy reveal">
+    <div class="kicker">Director</div>
+    <h2>Suzanne Luna</h2>
+    <p>With six Daytime Emmy Awards and 12 Nominations, Suzanne Luna is a Latina director/producer recognized for diverse storytelling in comedy, documentary, branded content, and fiction. Notably, Suzanne directed over 1,000 segments on <cite>The Ellen DeGeneres Show</cite>, accumulating 500M+ views in 15 years. Her work on <cite>Momsplaining with Kristen Bell</cite> earned 3 Webby Awards and has over 285M+ views.</p>
+  </div>
+</section>
+<section class="person" id="sean" data-scene="sean" data-chapter="who">
+  <div class="person-copy reveal">
+    <div class="kicker">Photographer</div>
+    <h2>Sean Murphy</h2>
+    <p>Sean Murphy is an iconic photographer who has been capturing award winning shots for over three decades. He has a passion for capturing gritty Americana, but is also a master at capturing spontaneous moments and delivering visually stunning, high concept marketing projects. Sean has directed national commercials, shot hundreds of music icons and Hollywood celebrities, and been visually behind award-winning ad campaigns for some of the biggest corporations on the planet.</p>
+  </div>
+</section>
+<section class="person" id="josh" data-scene="josh" data-chapter="who">
+  <div class="person-copy reveal">
+    <div class="kicker">Director of Photography · Cinematographer</div>
+    <h2>Josh Medak</h2>
+    <p>Meet Josh Medak, a prodigious talent in the world of show business, who literally took his first steps around the camera. Raised in a show business family, Josh’s journey with the lens began practically before he could walk. His grand-scale talent is unmistakable, evident in a resume that reads like a blockbuster anthology. From contributing to tentpole movies like <cite>The Hunger Games</cite> Franchise, <cite>Barbie</cite>, <cite>Ant-Man</cite>, <cite>Black Panther</cite>, <cite>Spider-Man</cite>, to the epic scale of <cite>Mulan</cite>, Josh has seamlessly navigated the spectrum of cinematic endeavors. Whether it’s a small-scale project or a colossal undertaking, Josh brings an unparalleled arsenal of skills, showcasing his mastery in capturing moments that resonate across the silver screen.</p>
+  </div>
+</section>
+<section class="person" id="shane" data-scene="shane" data-chapter="who">
+  <div class="person-copy reveal">
+    <div class="kicker">Director of Photography · Cinematographer</div>
+    <h2>Shane Reynolds</h2>
+    <p>Shane is a veteran at producing long and shortform material in the most adventurous destinations around the world. Whether he’s hosting, shooting, or editing…his musical background, adventurous spirit, and laid-back humor are evident in his unique style. Whether he’s part of the team or a one-man-show, Shane’s creativity and adaptability have made him a force within the world of TV and video production. Creating, hosting, and shooting television shows for Nat Geo, Animal Planet, and the Travel Channel, Shane has shot in over 30 countries and accumulated over 32 major awards.</p>
+  </div>
+</section>
+<section class="finale" data-scene="end">
+  <div class="reveal">
+    <p class="closing-line">We build trust. We honor truth. We tell stories that matter.</p>
+    <div class="finale-links">
+      <a href="projects/">Projects</a>
+      <a href="mood/">Mood boards</a>
+      <a href="contact/">Contact</a>
+    </div>
+    <button class="text-link" data-top>Back to the start</button>
+  </div>
+</section>
+
 <div class="lightbox" id="lightbox"><figure><img alt=""><p></p></figure></div>
-
-
 
 <script>
   // =====================================================================
@@ -328,6 +596,35 @@
   addEventListener("resize", build);
   build(); requestAnimationFrame(frame);
 
+</script>
+<script>
+  // =====================================================================
+  //  STORY — crossfades the background photo and glides text in as you scroll
+  // =====================================================================
+  (() => {
+    const scenes = {};
+    document.querySelectorAll("#scenes .scene").forEach(s => scenes[s.dataset.scene] = s);
+    const links = document.querySelectorAll(".story-index a");
+    let current = null;
+    function show(el) {
+      const key = el.dataset.scene;
+      if (key === current) return;
+      current = key;
+      Object.entries(scenes).forEach(([k, s]) => s.classList.toggle("on", k === key));
+      const ch = el.dataset.chapter;
+      document.body.classList.toggle("in-story", !!ch);
+      links.forEach(a => a.classList.toggle("on", a.dataset.chapter === ch));
+    }
+    // whichever section crosses the middle of the screen sets the photo
+    const mid = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && show(e.target)),
+      { rootMargin: "-50% 0px -50% 0px" });
+    document.querySelectorAll("[data-scene]:not(.scene)").forEach(s => mid.observe(s));
+    // text glides in when it arrives, and resets when it leaves (so scrolling back up replays it)
+    const rev = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("on", e.isIntersecting)),
+      { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach(r => rev.observe(r));
+    document.querySelector("[data-top]").onclick = () => scrollTo({ top: 0 });
+  })();
 </script>
 <script src="assets/site.js"></script>
 </body>

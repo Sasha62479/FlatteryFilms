@@ -23,11 +23,6 @@ a{color:inherit}
 .scrolled .topbar{opacity:1}
 .open .topbar{opacity:0}
 
-/* page arrives softly, and fades out when gliding to the next page */
-body{animation:arrive .7s ease}
-@keyframes arrive{from{opacity:0}}
-body.leaving{opacity:0;transition:opacity .45s ease}
-
 /* menu button */
 .burger{position:fixed;top:28px;right:32px;z-index:30;background:none;border:0;cursor:pointer;
   color:var(--ink);display:flex;align-items:center;gap:14px;font:inherit;font-size:11px;letter-spacing:.35em}
@@ -46,23 +41,12 @@ body.leaving{opacity:0;transition:opacity .45s ease}
 .nav-home{position:absolute;top:30px;left:44px;font-size:11px;letter-spacing:.35em;color:var(--red);text-decoration:none}
 
 .list{margin-top:120px;border-top:1px solid var(--line)}
-.item{border-bottom:1px solid var(--line)}
 .head{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;color:var(--ink);
   cursor:pointer;padding:30px 44px;font:inherit;font-size:15px;letter-spacing:.42em;text-align:left;transition:color .3s}
 .head:hover{color:#fff}
-.chev{width:9px;height:9px;border-right:1px solid var(--dim);border-bottom:1px solid var(--dim);transform:rotate(45deg) translateY(-3px);transition:transform .4s}
-.item.is-open .chev{transform:rotate(-135deg) translateY(-3px)}
-.body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s ease}
-.item.is-open .body{grid-template-rows:1fr}
-.body>div{overflow:hidden}
-.inner{padding:0 44px 34px;color:var(--dim);font-size:14px;line-height:1.7;letter-spacing:.03em}
-.stills{display:grid;grid-template-columns:repeat(3,1fr);gap:34px 10px;margin-top:4px;padding-bottom:20px}
-.stills a,.stills span{display:block;aspect-ratio:3/4;position:relative;text-decoration:none;
-  background:#1a1b1d linear-gradient(160deg,#25272a,#121314) center/cover;background-position:var(--pos,center)}
-.stills a{filter:grayscale(1) brightness(1.15);transition:filter .5s}
-.stills a:hover{filter:none}
-.stills b{position:absolute;left:0;bottom:-20px;font-weight:300;font-size:10px;letter-spacing:.25em;color:var(--dim);white-space:nowrap}
-.stills span{opacity:.45}
+.list a.head{border-bottom:1px solid var(--line);text-decoration:none}
+.arrow{width:9px;height:9px;border-right:1px solid var(--dim);border-top:1px solid var(--dim);transform:rotate(45deg);transition:transform .4s}
+.list a.head:hover .arrow{transform:translateX(4px) rotate(45deg)}
 
 .plain{list-style:none;padding:36px 44px}
 .plain a,.plain span{display:inline-block;color:var(--ink);text-decoration:none;font-size:15px;letter-spacing:.42em;padding:9px 0;transition:opacity .3s}
@@ -74,15 +58,8 @@ body.leaving{opacity:0;transition:opacity .45s ease}
   .topbar{height:72px}
   .wordmark{font-size:12px;letter-spacing:.42em;padding-left:.42em;top:30px;left:24px;transform:none}
   .head,.plain{padding-left:24px;padding-right:24px}
-  .inner{padding:0 24px 30px}
   .burger{right:20px}.close{right:20px}.nav-home{left:24px}
 }
-
-/* menu: "read more" link under a menu item's text */
-.more{display:table;margin-top:18px;color:var(--ink);text-decoration:none;font-size:11px;letter-spacing:.35em;
-  padding-bottom:5px;border-bottom:1px solid var(--red);transition:opacity .3s}
-.stills + .more{margin-top:30px}
-.more:hover{opacity:.7}
 
 /* =====================================================================
    PAGE HERO — a full-width still at the top of a text page that fades
@@ -123,21 +100,3 @@ body.leaving{opacity:0;transition:opacity .45s ease}
 
 @media (max-width:560px){ .page{padding:130px 24px 100px} .page-hero{height:46vh} .page-hero + .page{margin-top:-40px} }
 @media (prefers-reduced-motion:reduce){ .page{animation:none} }
-
-/* =====================================================================
-   NEXT PAGE — the last screen of a page shows the next page's opening
-   photo. Keep scrolling: the red line fills and the site glides on.
-   (The logic lives in site.js; clicking works too.)
-   ===================================================================== */
-.next-page{position:relative;display:grid;place-items:center;min-height:100vh;margin-top:60px;
-  color:var(--ink);text-decoration:none;background:#111 center/cover no-repeat;background-position:var(--pos,center)}
-.next-page::before{content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,var(--bg) 0%,rgba(8,9,10,.6) 30%,rgba(8,9,10,.5) 100%)}
-.next-inner{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px}
-.next-kicker{font-size:11px;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:26px}
-.next-kicker::before{content:"";display:inline-block;width:26px;height:1px;background:var(--red);vertical-align:middle;margin-right:14px}
-.next-title{font-weight:300;font-size:clamp(28px,5vw,62px);line-height:1.2;letter-spacing:.24em;text-transform:uppercase}
-.next-hint{margin-top:34px;font-size:10px;letter-spacing:.38em;color:var(--dim);text-transform:uppercase}
-.next-bar{display:block;width:160px;height:1px;margin-top:16px;background:var(--line);overflow:hidden}
-.next-fill{display:block;height:100%;background:var(--red);transform:scaleX(0);transform-origin:left}
-@media (prefers-reduced-motion:reduce){ body{animation:none} }
