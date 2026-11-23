@@ -41,7 +41,7 @@ Old addresses (`/what/`, `/why/`, `/who/`, `/projects/thin-space/`) forward to t
 - The Stories page is only an index: it lists and links, it never holds a second copy of a story.
 
 ## Menu
-WHAT · WHY · WHERE · WHO (glide to the home-page sections) — then PROJECTS · MOOD BOARDS · CONTACT (their own pages). Edit it in `assets/site.js`.
+The side menu opens panels: WHAT (project thumbnails + "What we do") · WHY · WHERE · WHO (team portraits + "Who we are"), then PROJECTS · MOOD BOARDS · CONTACT. Links starting with `#` glide to that part of the home-page story. Edit it in `assets/site.js`.
 
 ## Rules
 - One folder per page, each with its own `index.html`.

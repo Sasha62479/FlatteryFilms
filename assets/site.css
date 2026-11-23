@@ -41,12 +41,23 @@ a{color:inherit}
 .nav-home{position:absolute;top:30px;left:44px;font-size:11px;letter-spacing:.35em;color:var(--red);text-decoration:none}
 
 .list{margin-top:120px;border-top:1px solid var(--line)}
+.item{border-bottom:1px solid var(--line)}
 .head{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;color:var(--ink);
   cursor:pointer;padding:30px 44px;font:inherit;font-size:15px;letter-spacing:.42em;text-align:left;transition:color .3s}
 .head:hover{color:#fff}
-.list a.head{border-bottom:1px solid var(--line);text-decoration:none}
-.arrow{width:9px;height:9px;border-right:1px solid var(--dim);border-top:1px solid var(--dim);transform:rotate(45deg);transition:transform .4s}
-.list a.head:hover .arrow{transform:translateX(4px) rotate(45deg)}
+.chev{width:9px;height:9px;border-right:1px solid var(--dim);border-bottom:1px solid var(--dim);transform:rotate(45deg) translateY(-3px);transition:transform .4s}
+.item.is-open .chev{transform:rotate(-135deg) translateY(-3px)}
+.body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s ease}
+.item.is-open .body{grid-template-rows:1fr}
+.body>div{overflow:hidden}
+.inner{padding:0 44px 34px;color:var(--dim);font-size:14px;line-height:1.7;letter-spacing:.03em}
+.stills{display:grid;grid-template-columns:repeat(3,1fr);gap:34px 10px;margin-top:4px;padding-bottom:20px}
+.stills a,.stills span{display:block;aspect-ratio:3/4;position:relative;text-decoration:none;
+  background:#1a1b1d linear-gradient(160deg,#25272a,#121314) center/cover;background-position:var(--pos,center)}
+.stills a{filter:grayscale(1) brightness(1.15);transition:filter .5s}
+.stills a:hover{filter:none}
+.stills b{position:absolute;left:0;bottom:-20px;font-weight:300;font-size:10px;letter-spacing:.25em;color:var(--dim);white-space:nowrap}
+.stills span{opacity:.45}
 
 .plain{list-style:none;padding:36px 44px}
 .plain a,.plain span{display:inline-block;color:var(--ink);text-decoration:none;font-size:15px;letter-spacing:.42em;padding:9px 0;transition:opacity .3s}
@@ -58,8 +69,15 @@ a{color:inherit}
   .topbar{height:72px}
   .wordmark{font-size:12px;letter-spacing:.42em;padding-left:.42em;top:30px;left:24px;transform:none}
   .head,.plain{padding-left:24px;padding-right:24px}
+  .inner{padding:0 24px 30px}
   .burger{right:20px}.close{right:20px}.nav-home{left:24px}
 }
+
+/* menu: "read more" link under a menu item's text */
+.more{display:table;margin-top:18px;color:var(--ink);text-decoration:none;font-size:11px;letter-spacing:.35em;
+  padding-bottom:5px;border-bottom:1px solid var(--red);transition:opacity .3s}
+.stills + .more{margin-top:30px}
+.more:hover{opacity:.7}
 
 /* =====================================================================
    PAGE HERO — a full-width still at the top of a text page that fades
