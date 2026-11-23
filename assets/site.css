@@ -64,3 +64,40 @@ a{color:inherit}
   .inner{padding:0 24px 30px}
   .burger{right:20px}.close{right:20px}.nav-home{left:24px}
 }
+
+/* menu: "read more" link under a menu item's text */
+.more{display:table;margin-top:18px;color:var(--ink);text-decoration:none;font-size:11px;letter-spacing:.35em;
+  padding-bottom:5px;border-bottom:1px solid var(--red);transition:opacity .3s}
+.stills + .more{margin-top:30px}
+.more:hover{opacity:.7}
+
+/* =====================================================================
+   TEXT PAGES (What / Why / Who) — one calm reading column.
+   Copy is written in normal sentence case in the HTML; anything that
+   should SHOUT gets text-transform:uppercase here, so the look can change
+   without retyping the words.
+   ===================================================================== */
+.page{max-width:760px;margin:0 auto;padding:170px 32px 140px;animation:rise 1.1s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+.page-kicker{font-size:11px;letter-spacing:.38em;color:var(--dim);margin-bottom:26px;text-transform:uppercase}
+.page-kicker::before{content:"";display:inline-block;width:26px;height:1px;background:var(--red);vertical-align:middle;margin-right:14px}
+.page h1{font-weight:300;font-size:clamp(28px,4vw,48px);line-height:1.25;letter-spacing:.24em;text-transform:uppercase;margin-bottom:52px}
+.page h2{font-weight:300;font-size:11px;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin:76px 0 0}
+.page p{font-size:16px;line-height:1.9;letter-spacing:.03em;color:rgba(233,230,223,.78);margin-bottom:24px}
+.page .lede{font-size:clamp(17px,1.9vw,21px);line-height:1.75;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-bottom:40px}
+.page .closing{font-size:clamp(15px,1.6vw,18px);line-height:1.8;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);
+  margin-top:64px;padding-top:30px;border-top:1px solid var(--line);
+  background:linear-gradient(var(--red),var(--red)) 0 0/26px 1px no-repeat border-box}
+.page cite{font-style:italic;color:var(--ink)}
+.page cite a{text-decoration:none;border-bottom:1px solid var(--red)}
+.page cite a:hover{opacity:.7}
+
+.services{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0 36px;margin:22px 0 8px}
+.services li{padding:15px 0;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim)}
+
+.page-next{display:inline-block;margin-top:72px;color:var(--ink);text-decoration:none;font-size:11px;letter-spacing:.38em;text-transform:uppercase;
+  padding-bottom:6px;border-bottom:1px solid var(--red);transition:opacity .3s}
+.page-next:hover{opacity:.7}
+
+@media (max-width:560px){ .page{padding:130px 24px 100px} }
+@media (prefers-reduced-motion:reduce){ .page{animation:none} }
