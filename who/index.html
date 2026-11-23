@@ -8,10 +8,33 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/site.css">
+<style>
+  /* ---------- team: one full-screen person at a time ----------
+     Each person's headshot (assets/img/team/<id>.jpg) fills the screen behind their bio.
+     --pos decides which part of the photo stays in frame (e.g. "50% 30%" keeps the face high). */
+  .team-head{max-width:760px;margin:0 auto;padding:40px 32px 60px}
+  .team-head h2{font-weight:300;margin:0}
+  .person{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding:140px 7vw 14vh;
+    background:#0e0f10 center/cover no-repeat;background-position:var(--pos,center);scroll-margin-top:0}
+  .person::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(90deg,rgba(6,6,7,.92) 0%,rgba(6,6,7,.7) 40%,rgba(6,6,7,.15) 75%),
+               linear-gradient(0deg,rgba(6,6,7,.6) 0%,rgba(6,6,7,0) 40%)}
+  .person + .person{border-top:1px solid var(--line)}
+  .person-copy{position:relative;max-width:560px}
+  .person h2{font-weight:300;font-size:clamp(26px,3.4vw,44px);line-height:1.25;letter-spacing:.24em;text-transform:uppercase;margin:0 0 26px}
+  .person .page-kicker{margin-bottom:20px}
+  .person p{font-size:15px;line-height:1.85;letter-spacing:.03em;color:rgba(233,230,223,.8);margin-bottom:16px}
+  .person a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--red)}
+  @media (max-width:700px){
+    .person{padding:120px 24px 12vh}
+    .person::before{background:linear-gradient(0deg,rgba(6,6,7,.95) 0%,rgba(6,6,7,.75) 55%,rgba(6,6,7,.3) 100%)}
+  }
+</style>
 </head>
 <body>
 
 <!-- Copy is typed in normal sentence case. The capital-letter look comes from site.css. -->
+<div class="page-hero" role="img" aria-label="A photographer standing waist-deep in water at dusk beside a lit softbox" style="background-image:url('../assets/img/stills/sean-murphy-water-softbox.jpg');--pos:50% 55%"></div>
 <main class="page">
   <div class="page-kicker">Who</div>
   <h1>Who we are</h1>
@@ -22,10 +45,73 @@
   <p>From feature-length documentaries to short-form branded content, we bring the same creative vision and technical expertise to every project.</p>
   <p>Our experience may span genres and formats, but what unites us is a shared belief that extraordinary filmmaking begins with a story worth telling.</p>
 
+</main>
+
+<!-- =====================================================================
+     THE TEAM — one section per person. Headshot: assets/img/team/<id>.jpg
+     --pos picks which part of the photo stays in frame (same values as the menu in site.js).
+     ===================================================================== -->
+<div class="team-head"><h2 class="page-kicker" id="team">The team</h2></div>
+<section class="person" id="wil" style="background-image:url('../assets/img/team/wil.jpg');--pos:50% 30%" aria-label="Wil Beaucher">
+  <div class="person-copy">
+    <div class="page-kicker">Founding Partner · Writer/Director</div>
+    <h2>Wil Beaucher</h2>
+    <p>Wil Beaucher is a passionate writer/director who has shaped narratives for over two decades. With a rich tapestry of experience, Wil is a seasoned architect of both rewriting existing projects and creating original film and television scripts. His storytelling prowess goes beyond fiction, extending into the dynamic realm of docu-style advertising where he crafts and directs compelling ad campaigns through personal connection. Wil’s ability to weave captivating stories, whether on the big screen or in the succinct moments of a commercial, reflects his deep understanding of the human experience and a commitment to storytelling that resonates to a myriad of target audiences. In the hands of this seasoned creator, narratives come alive, leaving an enduring impact on audiences, and establishing Wil Beaucher as a luminary in the art of visual storytelling.</p>
+  </div>
+</section>
+<section class="person" id="dani" style="background-image:url('../assets/img/team/dani.jpg');--pos:50% 30%" aria-label="Dani Behr">
+  <div class="person-copy">
+    <div class="page-kicker">Founding Partner · Executive Producer</div>
+    <h2>Dani Behr</h2>
+    <p>Dani Behr, a seasoned entertainment veteran, boasts an illustrious career spanning over 35 years.</p>
+    <p>Her journey began with acting with acclaimed theatre show producer Cameron Mackintosh, signing a record deal with WEA shortly after with her All-Girl Pop Group and then becoming a household name as a live TV Host. She achieved cult status in her native UK for her late-night show and was recognized with the prestigious ‘Best TV Presenter’ award. Dani continued to thrive across various media platforms, serving as a TV Host, Radio Host, Voice Over Artist, and TV Producer ever since. She has left her mark across all TV genres, collaborating with renowned networks such as ABC, NBCU, FOX, BBC, C4, and ITV.</p>
+    <p>Dubbed the ‘Voice Over Queen’, Dani has lent her voice to numerous brands including the BBC, Virgin Atlantic, and the iconic video game Lara Croft.</p>
+    <p>The Drive-time Radio Host on KISS FM, shared the stage and screen with acclaimed actors like Kate Winslet, Joseph Fiennes, Cate Blanchett, and Oprah Winfrey. Performed at legendary venues such as Wembley Stadium, The Old Vic, and Madison Square Gardens. <a href="https://www.danibehr.com">danibehr.com</a></p>
+    <p>Currently, Dani serves as the Founder &amp; Executive Producer of DBI Entertainment, a dynamic TV &amp; Film Production company dedicated to creating scripted and non-scripted projects for the global marketplace. <a href="https://www.dbi-ent.com">dbi-ent.com</a></p>
+    <p>Additionally, she has recently co-founded Flattery Films, a content creation production company specializing in storytelling through branded documentaries with her award-winning team.</p>
+  </div>
+</section>
+<section class="person" id="steven" style="background-image:url('../assets/img/team/steven.jpg');--pos:50% 30%" aria-label="Steven V. Silver">
+  <div class="person-copy">
+    <div class="page-kicker">Director of Photography · Cinematographer</div>
+    <h2>Steven V. Silver</h2>
+    <p>Meet the visionary behind the lens, Steven V. Silver, a seasoned Director of Photography with an illustrious career adorned by 9 Emmy nominations and 3 Emmy wins. With an extraordinary eye for cinematography, Steven has left an indelible mark on the television landscape. His unparalleled talent has graced hit shows such as <cite>2 1/2 Men</cite>, <cite>Big Bang Theory</cite>, <cite>Moms</cite>, <cite>Dharma and Greg</cite>, and <cite>Murphy Brown</cite>. Steven’s commitment to capturing the essence of each moment has not only earned him critical acclaim but has also played an integral role in defining the visual identity of some of the most beloved sitcoms in television history. With a legacy of excellence, Steven V. Silver continues to illuminate screens and inspire audiences with his unique skill and creativity.</p>
+  </div>
+</section>
+<section class="person" id="suzanne" style="background-image:url('../assets/img/team/suzanne.jpg');--pos:50% 30%" aria-label="Suzanne Luna">
+  <div class="person-copy">
+    <div class="page-kicker">Director</div>
+    <h2>Suzanne Luna</h2>
+    <p>With six Daytime Emmy Awards and 12 Nominations, Suzanne Luna is a Latina director/producer recognized for diverse storytelling in comedy, documentary, branded content, and fiction. Notably, Suzanne directed over 1,000 segments on <cite>The Ellen DeGeneres Show</cite>, accumulating 500M+ views in 15 years. Her work on <cite>Momsplaining with Kristen Bell</cite> earned 3 Webby Awards and has over 285M+ views.</p>
+  </div>
+</section>
+<section class="person" id="sean" style="background-image:url('../assets/img/team/sean.jpg');--pos:50% 30%" aria-label="Sean Murphy">
+  <div class="person-copy">
+    <div class="page-kicker">Photographer</div>
+    <h2>Sean Murphy</h2>
+    <p>Sean Murphy is an iconic photographer who has been capturing award winning shots for over three decades. He has a passion for capturing gritty Americana, but is also a master at capturing spontaneous moments and delivering visually stunning, high concept marketing projects. Sean has directed national commercials, shot hundreds of music icons and Hollywood celebrities, and been visually behind award-winning ad campaigns for some of the biggest corporations on the planet.</p>
+  </div>
+</section>
+<section class="person" id="josh" style="background-image:url('../assets/img/team/josh.jpg');--pos:50% 30%" aria-label="Josh Medak">
+  <div class="person-copy">
+    <div class="page-kicker">Director of Photography · Cinematographer</div>
+    <h2>Josh Medak</h2>
+    <p>Meet Josh Medak, a prodigious talent in the world of show business, who literally took his first steps around the camera. Raised in a show business family, Josh’s journey with the lens began practically before he could walk. His grand-scale talent is unmistakable, evident in a resume that reads like a blockbuster anthology. From contributing to tentpole movies like <cite>The Hunger Games</cite> Franchise, <cite>Barbie</cite>, <cite>Ant-Man</cite>, <cite>Black Panther</cite>, <cite>Spider-Man</cite>, to the epic scale of <cite>Mulan</cite>, Josh has seamlessly navigated the spectrum of cinematic endeavors. Whether it’s a small-scale project or a colossal undertaking, Josh brings an unparalleled arsenal of skills, showcasing his mastery in capturing moments that resonate across the silver screen.</p>
+  </div>
+</section>
+<section class="person" id="shane" style="background-image:url('../assets/img/team/shane.jpg');--pos:50% 30%" aria-label="Shane Reynolds">
+  <div class="person-copy">
+    <div class="page-kicker">Director of Photography · Cinematographer</div>
+    <h2>Shane Reynolds</h2>
+    <p>Shane is a veteran at producing long and shortform material in the most adventurous destinations around the world. Whether he’s hosting, shooting, or editing…his musical background, adventurous spirit, and laid-back humor are evident in his unique style. Whether he’s part of the team or a one-man-show, Shane’s creativity and adaptability have made him a force within the world of TV and video production. Creating, hosting, and shooting television shows for Nat Geo, Animal Planet, and the Travel Channel, Shane has shot in over 30 countries and accumulated over 32 major awards.</p>
+  </div>
+</section>
+
+<div class="page" style="animation:none;padding-top:20px">
   <p class="closing">We build trust. We honor truth. We tell stories that matter.</p>
 
   <a class="page-next" href="../what/">Back to the start · What we do</a>
-</main>
+</div>
 
 <script src="../assets/site.js"></script>
 </body>

@@ -24,7 +24,7 @@ Every page uses one of these layouts, each with a clear job, so the site stays v
 | ↳ Project III · Sleeping Rough | `/what/sleeping-rough/` | Scroll story | England charity, kids sleeping rough | ⏳ |
 | Why | `/why/` | Text page | How We Connect — "It begins with curiosity." | ✅ |
 | Where | `/where/` | Single screen | "Everywhere!" — Air · Sea · Studio · Land, a clip behind each word | 🧪 |
-| Who | `/who/` | Text page → Scroll story | Who We Are copy is live; next: one full-screen person at a time, scroll through the team | 🛠 copy ✅ · team needs photos + bios |
+| Who | `/who/` | Text page + Scroll story | Who We Are copy, then one full-screen person at a time (Wil, Dani, Steven, Suzanne, Sean, Josh, Shane) | 🛠 copy + bios ✅ · needs headshots |
 | Stories | `/stories/` | Single screen | Every story across all projects, each linking to its chapter (later: podcast / YouTube) | ⏳ |
 | Mood | `/mood/` | Single screen | The reel, muted loop + "Play with sound" | 🧪 needs final reel |
 | Contact | `/contact/` | Single screen | info@flatteryfilms.com · Instagram · Facebook · YouTube | 🧪 |
@@ -49,3 +49,9 @@ WHAT (project thumbnails) · WHY · WHERE · WHO (team portraits) · STORIES · 
 - A page is added to the menu only when it has real content.
 - Images go in `images/<project>/` (e.g. `images/thin-space/`, `images/team/`), named lowercase-with-hyphens.
 - Web photos: about 2400px wide, ~80% JPEG quality, under ~600 KB. Full-screen photos: landscape, with dark space on one side for text.
+
+## Images
+All images live in the repo (no outside links), so nothing breaks when the domain changes.
+- `assets/img/stills/` — chapter stills + page backgrounds, ≤ 2400×1600, under ~480 KB, named by id (`thin-space-scotland-bagpiper.jpg`)
+- `assets/img/home/` — the home film strip, 1600 px on the long side
+- `assets/img/team/` — headshots named by person id (`wil.jpg`, `dani.jpg` …). Used full-screen on Who **and** as the 3:4 grayscale thumbnail in the menu; `pos` (e.g. `50% 30%`) picks the crop.

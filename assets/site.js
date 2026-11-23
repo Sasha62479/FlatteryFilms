@@ -8,13 +8,22 @@
   const MENU = [
     { label: "WHAT", href: "what/", more: "WHAT WE DO", projects: [
       { title: "THIN SPACE", href: "what/thin-space/",
-        img: "https://assets.codepen.io/14693322/Thin-Space-Scotland-Sean-Murphy-D2-052537900.jpg" },
+        img: "assets/img/stills/thin-space-scotland-kilts-street.jpg" },
       { title: "SHELTER" },          // add href + img when the page exists
       { title: "SLEEPING ROUGH" },
     ]},
     { label: "WHY",   text: "It begins with curiosity.", href: "why/", more: "HOW WE CONNECT" },
     { label: "WHERE", text: "Everywhere! Air · Sea · Studio · Land." },
-    { label: "WHO",   text: "Experience is important, but it’s only the beginning.", href: "who/", more: "WHO WE ARE" },
+    { label: "WHO", href: "who/", more: "WHO WE ARE", projects: [
+      // headshots live in assets/img/team/<id>.jpg · `pos` = which part of the photo stays in frame
+      { title: "WIL",     href: "who/#wil",     img: "assets/img/team/wil.jpg",     pos: "50% 30%" },
+      { title: "DANI",    href: "who/#dani",    img: "assets/img/team/dani.jpg",    pos: "50% 30%" },
+      { title: "STEVEN",  href: "who/#steven",  img: "assets/img/team/steven.jpg",  pos: "50% 30%" },
+      { title: "SUZANNE", href: "who/#suzanne", img: "assets/img/team/suzanne.jpg", pos: "50% 30%" },
+      { title: "SEAN",    href: "who/#sean",    img: "assets/img/team/sean.jpg",    pos: "50% 30%" },
+      { title: "JOSH",    href: "who/#josh",    img: "assets/img/team/josh.jpg",    pos: "50% 30%" },
+      { title: "SHANE",   href: "who/#shane",   img: "assets/img/team/shane.jpg",   pos: "50% 30%" },
+    ]},
   ];
   const LINKS = [
     { label: "MOOD" },       // href: "mood/"    when ready
@@ -31,7 +40,7 @@
       <div class="body"><div><div class="inner">${
         m.projects
           ? `<div class="stills">${m.projects.map(p => p.href
-              ? `<a href="${url(p.href)}" style="background-image:url('${p.img || ""}')"><b>${p.title}</b></a>`
+              ? `<a href="${url(p.href)}" style="${p.img ? `background-image:url('${url(p.img)}');` : ""}--pos:${p.pos || "center"}"><b>${p.title}</b></a>`
               : `<span><b>${p.title}</b></span>`).join("")}</div>`
           : m.text
       }${m.href ? `<a class="more" href="${url(m.href)}">${m.more || "READ MORE"}</a>` : ""}</div></div></div>

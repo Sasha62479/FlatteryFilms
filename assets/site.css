@@ -44,9 +44,9 @@ a{color:inherit}
 .item.is-open .body{grid-template-rows:1fr}
 .body>div{overflow:hidden}
 .inner{padding:0 44px 34px;color:var(--dim);font-size:14px;line-height:1.7;letter-spacing:.03em}
-.stills{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px;padding-bottom:20px}
+.stills{display:grid;grid-template-columns:repeat(3,1fr);gap:34px 10px;margin-top:4px;padding-bottom:20px}
 .stills a,.stills span{display:block;aspect-ratio:3/4;position:relative;text-decoration:none;
-  background:linear-gradient(160deg,#25272a,#121314) center/cover}
+  background:#1a1b1d linear-gradient(160deg,#25272a,#121314) center/cover;background-position:var(--pos,center)}
 .stills a{filter:grayscale(1) brightness(1.15);transition:filter .5s}
 .stills a:hover{filter:none}
 .stills b{position:absolute;left:0;bottom:-20px;font-weight:300;font-size:10px;letter-spacing:.25em;color:var(--dim);white-space:nowrap}
@@ -70,6 +70,15 @@ a{color:inherit}
   padding-bottom:5px;border-bottom:1px solid var(--red);transition:opacity .3s}
 .stills + .more{margin-top:30px}
 .more:hover{opacity:.7}
+
+/* =====================================================================
+   PAGE HERO — a full-width still at the top of a text page that fades
+   into the background; the reading column then slides up over the fade.
+   ===================================================================== */
+.page-hero{position:relative;height:64vh;min-height:340px;background:#111 center/cover no-repeat;background-position:var(--pos,center)}
+.page-hero::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(8,9,10,.82) 0%,rgba(8,9,10,.35) 14%,rgba(8,9,10,0) 30%,rgba(8,9,10,.15) 55%,var(--bg) 100%)}
+.page-hero + .page{position:relative;margin-top:-140px;padding-top:0}
 
 /* =====================================================================
    TEXT PAGES (What / Why / Who) — one calm reading column.
@@ -99,5 +108,5 @@ a{color:inherit}
   padding-bottom:6px;border-bottom:1px solid var(--red);transition:opacity .3s}
 .page-next:hover{opacity:.7}
 
-@media (max-width:560px){ .page{padding:130px 24px 100px} }
+@media (max-width:560px){ .page{padding:130px 24px 100px} .page-hero{height:46vh} .page-hero + .page{margin-top:-40px} }
 @media (prefers-reduced-motion:reduce){ .page{animation:none} }
