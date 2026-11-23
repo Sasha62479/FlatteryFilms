@@ -2,18 +2,19 @@
 //  FLATTERY FILMS — shared wordmark + menu (every page loads this file)
 //  Edit the menu HERE only. Paths are relative to the site's root folder.
 //  A link with no `href` shows faded as "soon" — add the href once the page exists.
+//  On a menu item, `href` + `more` add a link to that section's page (e.g. WHY → "HOW WE CONNECT").
 // =====================================================================
 (() => {
   const MENU = [
-    { label: "WHAT", projects: [
+    { label: "WHAT", href: "what/", more: "WHAT WE DO", projects: [
       { title: "THIN SPACE", href: "what/thin-space/",
         img: "https://assets.codepen.io/14693322/Thin-Space-Scotland-Sean-Murphy-D2-052537900.jpg" },
       { title: "SHELTER" },          // add href + img when the page exists
       { title: "SLEEPING ROUGH" },
     ]},
-    { label: "WHY",   text: "Flattery will get you everywhere. Attention and the right questions reveal people's authentic beauty." },
+    { label: "WHY",   text: "It begins with curiosity.", href: "why/", more: "HOW WE CONNECT" },
     { label: "WHERE", text: "Everywhere! Air · Sea · Studio · Land." },
-    { label: "WHO",   text: "A collective of directors, cinematographers and producers." },
+    { label: "WHO",   text: "Experience is important, but it’s only the beginning.", href: "who/", more: "WHO WE ARE" },
   ];
   const LINKS = [
     { label: "MOOD" },       // href: "mood/"    when ready
@@ -33,7 +34,7 @@
               ? `<a href="${url(p.href)}" style="background-image:url('${p.img || ""}')"><b>${p.title}</b></a>`
               : `<span><b>${p.title}</b></span>`).join("")}</div>`
           : m.text
-      }</div></div></div>
+      }${m.href ? `<a class="more" href="${url(m.href)}">${m.more || "READ MORE"}</a>` : ""}</div></div></div>
     </div>`;
 
   document.body.insertAdjacentHTML("afterbegin", `
