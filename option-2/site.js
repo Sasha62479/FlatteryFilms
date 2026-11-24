@@ -108,7 +108,7 @@ const TEAM_PHOTOS = {
   dani:    { img: "../assets/img/team/dani.jpg",    pos: "50% 25%", pin: [57, 24] },
   steven:  { img: "../assets/img/team/steven.jpg",  pos: "58% 30%", pin: [68, 24] },
   suzanne: { img: "../assets/img/team/suzanne.jpg", pos: "35% 35%", pin: [48, 20] },
-  sean:    {                                                       pin: [58, 28] },
+  sean:    { img: "../assets/img/team/sean.jpg",    pos: "55% 50%", pin: [73, 26] },
   josh:    { img: "../assets/img/team/josh.jpg",    pos: "62% 40%", pin: [74, 38] },
   shane:   { img: "../assets/img/team/shane.jpg",   pos: "50% 30%", pin: [52, 30] },
 };
