@@ -113,6 +113,30 @@ const TEAM_PHOTOS = {
   shane:   { img: "../assets/img/team/shane.jpg",   pos: "50% 30%", pin: [52, 30] },
 };
 TEAM.forEach(t => Object.assign(t, TEAM_PHOTOS[t.id] || {}));
+// Full bios (as supplied 24 Nov 2026). Each person's screen scrolls inside if the bio is long.
+const BIOS = {
+  wil: { role: "FOUNDING PARTNER · WRITER / DIRECTOR", paras: [
+    "Wil Beaucher is a passionate writer/director who has shaped narratives for over two decades. With a rich tapestry of experience, Wil is a seasoned architect of both rewriting existing projects and creating original film and television scripts. His storytelling prowess goes beyond fiction, extending into the dynamic realm of docu-style advertising where he crafts and directs compelling ad campaigns through personal connection.",
+    "Wil’s ability to weave captivating stories, whether on the big screen or in the succinct moments of a commercial, reflects his deep understanding of the human experience and a commitment to storytelling that resonates to a myriad of target audiences. In the hands of this seasoned creator, narratives come alive, leaving an enduring impact on audiences, and establishing Wil Beaucher as a luminary in the art of visual storytelling." ] },
+  dani: { role: "FOUNDING PARTNER · EXECUTIVE PRODUCER", paras: [
+    "Dani Behr, a seasoned entertainment veteran, boasts an illustrious career spanning over 35 years.",
+    "Her journey began with acting with acclaimed theatre show producer Cameron Mackintosh, signing a record deal with WEA shortly after with her All-Girl Pop Group and then becoming a household name as a live TV Host. She achieved cult status in her native UK for her late-night show and was recognized with the prestigious ‘Best TV Presenter’ award. Dani continued to thrive across various media platforms, serving as a TV Host, Radio Host, Voice Over Artist, and TV Producer ever since. She has left her mark across all TV genres, collaborating with renowned networks such as ABC, NBCU, FOX, BBC, C4, and ITV." ] },
+  steven: { role: "DIRECTOR OF PHOTOGRAPHY · CINEMATOGRAPHER", paras: [
+    "Meet the visionary behind the lens, Steven V. Silver, a seasoned Director of Photography with an illustrious career adorned by 9 Emmy nominations and 3 Emmy wins. With an extraordinary eye for cinematography, Steven has left an indelible mark on the television landscape. His unparalleled talent has graced hit shows such as <i>2 1/2 Men</i>, <i>Big Bang Theory</i>, <i>Moms</i>, <i>Dharma and Greg</i>, and <i>Murphy Brown</i>.",
+    "Steven’s commitment to capturing the essence of each moment has not only earned him critical acclaim but has also played an integral role in defining the visual identity of some of the most beloved sitcoms in television history. With a legacy of excellence, Steven V. Silver continues to illuminate screens and inspire audiences with his unique skill and creativity." ] },
+  suzanne: { role: "DIRECTOR", paras: [
+    "With six Daytime Emmy Awards and 12 Nominations, Suzanne Luna is a Latina director/producer recognized for diverse storytelling in comedy, documentary, branded content, and fiction. Notably, Suzanne directed over 1,000 segments on <i>The Ellen DeGeneres Show</i>, accumulating 500M+ views in 15 years. Her work on <i>Momsplaining with Kristen Bell</i> earned 3 Webby Awards and has over 285M+ views." ] },
+  sean: { role: "PHOTOGRAPHER", paras: [
+    "Sean Murphy is an iconic photographer who has been capturing award winning shots for over three decades. He has a passion for capturing gritty Americana, but is also a master at capturing spontaneous moments and delivering visually stunning, high concept marketing projects.",
+    "Sean has directed national commercials, shot hundreds of music icons and Hollywood celebrities, and been visually behind award-winning ad campaigns for some of the biggest corporations on the planet." ] },
+  josh: { role: "DIRECTOR OF PHOTOGRAPHY · CINEMATOGRAPHER", paras: [
+    "Meet Josh Medak, a prodigious talent in the world of show business, who literally took his first steps around the camera. Raised in a show business family, Josh’s journey with the lens began practically before he could walk.",
+    "His grand-scale talent is unmistakable, evident in a resume that reads like a blockbuster anthology. From contributing to tentpole movies like <i>The Hunger Games</i> Franchise, <i>Barbie</i>, <i>Ant-Man</i>, <i>Black Panther</i>, <i>Spider-Man</i>, to the epic scale of <i>Mulan</i>, Josh has seamlessly navigated the spectrum of cinematic endeavors. Whether it’s a small-scale project or a colossal undertaking, Josh brings an unparalleled arsenal of skills, showcasing his mastery in capturing moments that resonate across the silver screen." ] },
+  shane: { role: "DIRECTOR OF PHOTOGRAPHY · CINEMATOGRAPHER", paras: [
+    "Shane is a veteran at producing long and shortform material in the most adventurous destinations around the world. Whether he’s hosting, shooting, or editing… his musical background, adventurous spirit, and laid-back humor are evident in his unique style.",
+    "Whether he’s part of the team or a one-man-show, Shane’s creativity and adaptability have made him a force within the world of TV and video production. Creating, hosting, and shooting television shows for Nat Geo, Animal Planet, and the Travel Channel, Shane has shot in over 30 countries and accumulated over 32 major awards." ] },
+};
+TEAM.forEach(t => { if (BIOS[t.id]) { t.role = BIOS[t.id].role; t.paras = BIOS[t.id].paras; t.intro = true; } });
 const NEXT = (label, path) => ({ label: label + " &nbsp;→", href: "#/" + path });   // same as link() below
 
 const WHAT_INTRO = [
