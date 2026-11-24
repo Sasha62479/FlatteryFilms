@@ -132,7 +132,7 @@ const TEAM_PHOTOS = {
              reels: [["WATCH THE MULTI-CAMERA REEL", "../assets/video/steven-multi-camera-reel.mp4"],
                      ["TWO AND A HALF MEN · DANCE SCENE", "../assets/video/steven-two-and-a-half-men-dance.mp4"]] },
   suzanne: { img: "../assets/img/team/suzanne.jpg", pos: "35% 35%", pin: [48, 20] },
-  sean:    { img: "../assets/img/team/sean.jpg",    pos: "55% 50%", pin: [73, 26] },
+  sean:    { img: "../assets/img/team/sean.jpg",    pos: "55% 40%", pin: [66, 22] },
   josh:    { img: "../assets/img/team/josh.jpg",    pos: "62% 40%", pin: [74, 38] },
   shane:   { img: "../assets/img/team/shane.jpg",   pos: "50% 30%", pin: [52, 30] },
 };
