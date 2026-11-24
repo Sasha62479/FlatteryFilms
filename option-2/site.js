@@ -20,7 +20,7 @@ const WP  = "https://flatteryfilms.com/wp-content/uploads/";
 //    Wrap a name in <mark>…</mark> for the red hand-drawn stroke.
 // ---------------------------------------------------------------------
 const PROJECTS = [
-  { id: "thin-space", num: "I", title: "THIN SPACE", year: "2026",
+  { id: "thin-space", num: "I", title: "THIN SPACE", year: "2026", youtube: "https://www.youtube.com/watch?v=9JPWCEjn4EE",
     cover: PEN + "Thin-Space-Scotland-Sean-Murphy-D2-052537900.jpg",
     chapters: [
       { id: "intro", img: PEN + "Thin-Space-Scotland-Sean-Murphy-D2-052537900.jpg",
@@ -28,25 +28,38 @@ const PROJECTS = [
         text: "An upcoming documentary. Will's introduction to the film goes here. Stills by <mark>Sean Murphy</mark>." },
       { id: "costa-rica", img: PEN + "Thin-Space-Eric-Pall300077adino-Sean-Murphy-D5-CostaRica-1124.jpg",
         kicker: "I · COSTA RICA", title: "COSTA RICA", audio: "",
-        text: "The story behind this still goes here: where it was, who was there, what happened just before the shutter." },
+        text: "With guest star <mark>Erik Palladino</mark>. The story behind this still goes here: where it was, who was there, what happened just before the shutter." },
       { id: "abandoned-plane", img: PEN + "Thin-Space-abandoned+plabe.jpg",
         kicker: "II", title: "ABACO", audio: "",
         text: "The Abaco episode, with guest star <mark>Pat Muldoon</mark>. The story behind this still goes here." },
       { id: "mexico", img: PEN + "Thin_Space_Sean_Murphy_Mexico_0924_D12262651.jpg",
         kicker: "III · MEXICO", title: "MEXICO", audio: "",
-        text: "The story behind this still goes here." },
+        text: "Our first guest, <mark>Steve Silver</mark>, joined us in Mexico, and that’s how he became part of the show. The story behind this still goes here." },
       { id: "boat", img: PEN + "Thin-Space-Eric-Pall292295adino-Sean-Murphy-D3-CostaRica-1124.jpg?format=auto",
         kicker: "IV · COSTA RICA", title: "THE BOAT", audio: "",
         text: "The story behind this still goes here." },
       { id: "scotland", img: PEN + "Thin-Space-Scotland-Sean-Murphy-D5-052547463.jpg",
         kicker: "V · SCOTLAND", title: "SCOTLAND", audio: "",
-        text: "The story behind this still goes here." },
+        text: "With guest star <mark>Tommy Flanagan</mark>. The story behind this still goes here." },
       { id: "end", img: PEN + "Thin-Space-Scotland-Sean-Murphy-D1Leica-052536906.jpg",
         kicker: "THIN SPACE", title: "END OF THE REEL", end: true,
         text: "Thank you for watching. More of the story is coming in 2026." },
     ]},
   { id: "shelter",        num: "II",  title: "SHELTER" },          // add cover + chapters when ready
-  { id: "sleeping-rough", num: "III", title: "SLEEPING ROUGH" },
+  // III · SHORT FILMS — Wil's independent films, most with Sean Murphy. Placeholder clips for now:
+  //   clip = a silent looping video behind the panel (assets/video), img = its still (assets/img/posters)
+  { id: "short-films", num: "III", title: "SHORT FILMS", year: "WIL BEAUCHER", cover: "../assets/img/posters/short-simmer-down.jpg",
+    chapters: [
+      { id: "simmer-down", clip: "../assets/video/short-simmer-down.mp4", img: "../assets/img/posters/short-simmer-down.jpg",
+        kicker: "PROJECT III · SHORT FILMS", title: "SIMMER DOWN",
+        text: "A short film with photographer <mark>Sean Murphy</mark>. A few lines about this film go here." },
+      { id: "pura-vida", clip: "../assets/video/short-pura-vida.mp4", img: "../assets/img/posters/short-pura-vida.jpg",
+        kicker: "SHORT FILM", title: "PURA VIDA", text: "A few lines about this film go here." },
+      { id: "no-quarter", clip: "../assets/video/short-no-quarter.mp4", img: "../assets/img/posters/short-no-quarter.jpg",
+        kicker: "SHORT FILM", title: "NO QUARTER", text: "A few lines about this film go here." },
+      { id: "end", kicker: "SHORT FILMS", title: "MORE FILMS COMING", end: true,
+        text: "More of Wil’s films are on their way to this page." },
+    ]},
 ];
 
 // ---------------------------------------------------------------------
@@ -106,7 +119,9 @@ const IMG = "../assets/img/stills/";
 const TEAM_PHOTOS = {
   wil:     { img: "../assets/img/team/wil.jpg",     pos: "50% 40%", pin: [62, 40] },
   dani:    { img: "../assets/img/team/dani.jpg",    pos: "50% 25%", pin: [57, 24] },
-  steven:  { img: "../assets/img/team/steven.jpg",  pos: "58% 30%", pin: [68, 24] },
+  steven:  { img: "../assets/img/team/steven.jpg",  pos: "58% 30%", pin: [68, 24],
+             reels: [["WATCH THE MULTI-CAMERA REEL", "../assets/video/steven-multi-camera-reel.mp4"],
+                     ["TWO AND A HALF MEN · DANCE SCENE", "../assets/video/steven-two-and-a-half-men-dance.mp4"]] },
   suzanne: { img: "../assets/img/team/suzanne.jpg", pos: "35% 35%", pin: [48, 20] },
   sean:    { img: "../assets/img/team/sean.jpg",    pos: "55% 50%", pin: [73, 26] },
   josh:    { img: "../assets/img/team/josh.jpg",    pos: "62% 40%", pin: [74, 38] },
@@ -179,6 +194,9 @@ const ABOUT_INTRO = [
 ];
 const WHERE_INTRO = { id: "everywhere", intro: true, img: IMG + "alaska-helicopter-glacier.jpg", kicker: LABELS.go, title: "EVERYWHERE!",
   lede: "Air · Sea · Studio · Land.", paras: ["Flattery will get you everywhere!"] };
+// placeholder clips (assets/video) — swap for the real ones when they're cut
+const WHERE_CLIPS = { AIR: ["../assets/video/where-air-flight.mp4", "../assets/img/posters/where-air-flight.jpg"],
+                      LAND: ["../assets/video/where-land-car-rollover.mp4", "../assets/img/posters/where-land-car-rollover.jpg"] };
 const WHERE_STILLS = { AIR: IMG + "wild-response-helicopter.jpg", SEA: IMG + "thin-space-mexico-underwater.jpg",
                        STUDIO: IMG + "sean-murphy-boxing.jpg", LAND: IMG + "thin-space-scotland-kilts-street.jpg" };
 const WHO_INTRO = { id: "who-we-are", intro: true, img: IMG + "sean-murphy-water-softbox.jpg", pos: "50% 55%", kicker: LABELS.together, title: "WHO WE ARE",
@@ -551,7 +569,8 @@ function mountStory(app, { list, total, base, crumb, onShow, endLinks, iris }, s
     <div class="copy"></div>
     <div class="count"><span class="num">01</span><i><b class="bar"></b></i><span>${String(total).padStart(2, "0")}</span></div>
     <button class="next"><span class="nextLabel"></span><span class="pill"></span></button>
-    <main class="steps"></main>`;
+    <main class="steps"></main>
+    <div class="player" hidden><video controls playsinline></video><button class="player-x">CLOSE</button></div>`;
   const bgs = $(".bgs", app), copy = $(".copy", app), steps = $(".steps", app), pins = $(".pins", app);
   app.classList.toggle("iris", !!iris);      // WHO: each person opens out of the dark in a soft circle (like DARK)
 
@@ -568,6 +587,7 @@ function mountStory(app, { list, total, base, crumb, onShow, endLinks, iris }, s
       <div class="kicker">${c.kicker}</div><h2>${c.title}</h2>${body}
       ${c.links ? `<div class="end-links">${c.links.map(l => `<a href="${l.href}">${l.label}</a>`).join("")}</div>` : ""}
       ${c.credits ? `<div class="credits">CREDITS &nbsp;<b>${c.credits}</b></div>` : ""}
+      ${c.reels ? `<div class="reels">${c.reels.map(([l, s]) => `<button class="reel" data-src="${s}"><span></span>${l}</button>`).join("")}</div>` : ""}
       ${listen}
       ${c.end ? `<div class="end-links">${endLinks}</div>` : ""}
     </article>`);
@@ -612,6 +632,15 @@ function mountStory(app, { list, total, base, crumb, onShow, endLinks, iris }, s
 
   // LISTEN — Will telling the story behind the still
   function stopAudio() { if (audio) { audio.pause(); audio = null; } app.querySelectorAll(".listen.playing").forEach(b => b.classList.remove("playing")); }
+  // reels: open full screen with sound
+  const player = $(".player", app), pv = $(".player video", app);
+  const closePlayer = () => { pv.pause(); pv.removeAttribute("src"); pv.load(); player.hidden = true; };
+  app.addEventListener("click", e => {
+    const r = e.target.closest("button.reel");
+    if (r) { stopAudio(); pv.src = r.dataset.src; player.hidden = false; pv.play().catch(() => {}); return; }
+    if (e.target.closest(".player-x") || e.target === player) return closePlayer();
+  });
+  addEventListener("keydown", e => e.key === "Escape" && !player.hidden && closePlayer());
   app.addEventListener("click", e => {
     const b = e.target.closest("button.listen"); if (!b) return;
     if (b.classList.contains("playing")) return stopAudio();
@@ -640,7 +669,7 @@ function mountProject(app, p, chapterId) {
   return mountStory(app, {
     list: p.chapters, total: p.chapters.length, base: "what/" + p.id,
     crumb: `<button data-mark>${LABELS.mark}</button> &nbsp;/&nbsp; ${p.title}`,
-    endLinks: `<button data-top>BACK TO THE START</button><a href="${link("stories")}">ALL STORIES</a><a href="${link("")}">HOME</a>`,
+    endLinks: `<button data-top>BACK TO THE START</button>${p.youtube ? `<a href="${p.youtube}" target="_blank" rel="noopener">WATCH ON YOUTUBE</a>` : ""}<a href="${link("stories")}">ALL STORIES</a><a href="${link("")}">HOME</a>`,
   }, chapterId);
 }
 
@@ -683,7 +712,8 @@ function mountAbout(app) {
 // ---- PAGE · WHERE (where/) — the write-up, then one full screen per world ----
 function mountWhereStory(app, chapterId) {
   const worlds = WHERE.map((w, i) => ({ id: w.word.toLowerCase(), kicker: LABELS.go + " · " + String(i + 1).padStart(2, "0"), title: w.word, text: w.line,
-    img: WHERE_STILLS[w.word], clip: w.word === "STUDIO" ? null : w.clip }));
+    img: (WHERE_CLIPS[w.word] || [])[1] || WHERE_STILLS[w.word],
+    clip: w.word === "STUDIO" ? null : (WHERE_CLIPS[w.word] || [w.clip])[0] }));
   worlds[worlds.length - 1].links = [NEXT(LABELS.together, "who")];
   const list = [WHERE_INTRO, ...worlds];
   return mountStory(app, { list, total: list.length, base: "where", crumb: `${LABELS.go} &nbsp;/&nbsp; EVERYWHERE` }, chapterId);

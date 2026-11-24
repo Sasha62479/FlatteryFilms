@@ -306,3 +306,13 @@ a.head{text-decoration:none}
   .wordmark{top:42px;right:20px;left:auto;margin-right:-.42em}
   .svc-menu{columns:1}
 }
+
+/* reel buttons on a team member's panel, and the full-screen player they open */
+.reels{display:flex;flex-direction:column;gap:12px;margin-top:22px;align-items:flex-start}
+.reel{background:none;border:0;color:var(--ink);font:inherit;font-size:10px;letter-spacing:.32em;cursor:pointer;display:flex;align-items:center;gap:12px;padding:0}
+.reel span{width:0;height:0;border-left:7px solid var(--red);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.reel:hover{opacity:.7}
+.player{position:fixed;inset:0;z-index:60;background:rgba(4,4,5,.94);display:flex;align-items:center;justify-content:center}
+.player[hidden]{display:none}
+.player video{width:min(88vw,1400px);max-height:80vh;background:#000}
+.player-x{position:absolute;top:28px;right:32px;background:none;border:0;color:var(--ink);font:inherit;font-size:11px;letter-spacing:.35em;cursor:pointer}
