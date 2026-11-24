@@ -141,7 +141,13 @@ const BIOS = {
     "Whether he’s part of the team or a one-man-show, Shane’s creativity and adaptability have made him a force within the world of TV and video production. Creating, hosting, and shooting television shows for Nat Geo, Animal Planet, and the Travel Channel, Shane has shot in over 30 countries and accumulated over 32 major awards." ] },
 };
 TEAM.forEach(t => { if (BIOS[t.id]) { t.role = BIOS[t.id].role; t.paras = BIOS[t.id].paras; t.intro = true; } });
-const NEXT = (label, path) => ({ label: label + " &nbsp;→", href: "#/" + path });   // same as link() below
+// MENU LABELS — the filmmaker's creed. Change any wording here and it updates everywhere
+// (menu, the small location labels at the top of pages, and the "next" links).
+const LABELS = {
+  look: "LOOK CLOSER", listen: "LISTEN", roll: "ROLL CAMERA", go: "GO ANYWHERE", together: "TOGETHER", mark: "LEAVE A MARK",
+  mood: "WE ARE SUCH A MOOD", stories: "OUR STORIES", contact: "CONTACT",
+};
+const NEXT = (label, path) => ({ label: "NEXT &nbsp;·&nbsp; " + label, href: "#/" + path });   // same as link() below
 
 const WHAT_INTRO = [
   { id: "what-we-do", intro: true, img: IMG + "thin-space-scotland-dinner-shoot.jpg", kicker: "WHAT", title: "WHAT WE DO",
@@ -154,21 +160,28 @@ const WHAT_INTRO = [
   { id: "services", intro: true, img: IMG + "sean-murphy-bison.jpg", kicker: "WHAT", title: "SERVICES",
     list: ["Docuseries", "Full-length docs", "Full-length features", "Scripting", "Original scripting", "Script rewrites", "Talent acquisition",
            "Location procurement", "Voice-over", "Original scoring", "Show development", "Studio and on location", "Drone",
-           "Deep sea capabilities", "BTS", "Product and marketing stills", "In-house editing", "Color correction", "Sound design", "Edit direction"] },
+           "Deep sea capabilities", "BTS", "Product & marketing stills", "In-house editing", "Color correction", "Sound design", "Edit direction"] },
 ];
 const WHY_INTRO = [
-  { id: "how-we-connect", intro: true, img: IMG + "bike-shop-yellow-hat.jpg", kicker: "WHY", title: "HOW WE CONNECT", lede: "It begins with curiosity.",
+  { id: "how-we-connect", intro: true, img: IMG + "thin-space-scotland-dinner-shoot.jpg", kicker: "HOW WE CONNECT", title: "IT BEGINS<br>WITH CURIOSITY.",
     paras: [
       "The most compelling stories often reveal themselves in unexpected ways. A quiet conversation, an unguarded moment, a simple gesture that says more than the words that follow.",
       "We approach every project with an open mind, a genuine curiosity, and a desire to understand the people at their heart, and the experiences at their core. We listen, observe, and allow the story to unfold naturally, discovering the moments of truth that make each film uniquely human.",
       "Because real connection can’t be manufactured. It has to be earned." ],
-    links: [NEXT("WHERE WE GO", "where")] },
+    links: [NEXT(LABELS.listen, "about")] },
 ];
-const WHERE_INTRO = { id: "everywhere", intro: true, img: IMG + "alaska-helicopter-glacier.jpg", kicker: "WHERE", title: "EVERYWHERE!",
+const ABOUT_INTRO = [
+  { id: "about-us", intro: true, img: IMG + "thin-space-scotland-bagpiper.jpg", kicker: "ABOUT US", title: "REAL CONNECTION<br>HAS TO BE EARNED.",
+    paras: [
+      "Flattery Films is a collective of award-winning directors, cinematographers, and producers united by a shared commitment to meaningful storytelling.",
+      "We believe great storytelling begins with trust. It’s what allows us to look deeper, connect more honestly, and capture the moments that make a story worth telling." ],
+    links: [NEXT(LABELS.go, "where")] },
+];
+const WHERE_INTRO = { id: "everywhere", intro: true, img: IMG + "alaska-helicopter-glacier.jpg", kicker: LABELS.go, title: "EVERYWHERE!",
   lede: "Air · Sea · Studio · Land.", paras: ["Flattery will get you everywhere!"] };
 const WHERE_STILLS = { AIR: IMG + "wild-response-helicopter.jpg", SEA: IMG + "thin-space-mexico-underwater.jpg",
                        STUDIO: IMG + "sean-murphy-boxing.jpg", LAND: IMG + "thin-space-scotland-kilts-street.jpg" };
-const WHO_INTRO = { id: "who-we-are", intro: true, img: IMG + "sean-murphy-water-softbox.jpg", pos: "50% 55%", kicker: "WHO", title: "WHO WE ARE",
+const WHO_INTRO = { id: "who-we-are", intro: true, img: IMG + "sean-murphy-water-softbox.jpg", pos: "50% 55%", kicker: LABELS.together, title: "WHO WE ARE",
   lede: "Experience is important, but it’s only the beginning.",
   paras: [
     "The Flattery Films team brings decades of experience across documentary filmmaking, television, and cinematic branded storytelling, collectively earning more than 20 Emmy nominations, 9 wins, and over a billion views worldwide.",
@@ -191,7 +204,7 @@ const SOCIAL = [
 // =====================================================================
 function mountHome(app) {
   app.innerHTML = `<main class="hero"><canvas id="logo" aria-label="Flattery Films logo as a moving film strip"></canvas></main>
-    <div class="lightbox" id="lightbox"><figure><img alt=""><p></p><a class="story-link" hidden>READ THE STORY &nbsp;→</a></figure></div>`;
+    <div class="lightbox" id="lightbox"><figure><img alt=""><p></p><a class="story-link" hidden>READ THE STORY</a></figure></div>`;
   let alive = true;
   const STILLS = HOME_STILLS;
 
@@ -463,19 +476,23 @@ const $ = (sel, root = document) => root.querySelector(sel);
 
 // ---- MENU (assets/site.js on the real site) ----
 (() => {
+  // href = goes straight to its page · services / people / projects = opens like an accordion
   const MENU = [
-    { label: "WHAT", projects: PROJECTS, more: ["WHAT WE DO", "what"] },
-    { label: "WHY",   text: "Flattery will get you everywhere. Attention and the right questions reveal people's authentic beauty.", more: ["HOW WE CONNECT", "why"] },
-    { label: "WHERE", text: `Everywhere! Air · Sea · Studio · Land.<br><a class="more" href="${link("where")}">SEE IT &nbsp;→</a>` },
-    { label: "WHO",   people: TEAM, more: ["WHO WE ARE", "who"] },
+    { label: LABELS.look,     href: link("why") },                      // How we connect
+    { label: LABELS.listen,   href: link("about") },                    // About us
+    { label: LABELS.roll,     services: WHAT_INTRO[1].list },           // What we do
+    { label: LABELS.go,       href: link("where") },                    // Air · Sea · Studio · Land
+    { label: LABELS.together, people: TEAM, more: ["WHO WE ARE", "who"] },
+    { label: LABELS.mark,     projects: PROJECTS },                     // Projects
   ];
   const LINKS = [
-    { label: "STORIES", href: link("stories") },
-    { label: "MOOD",    href: link("mood") },
-    { label: "CONTACT", href: link("contact") },
+    { label: LABELS.stories, href: link("stories") },                   // still undecided (overlaps LEAVE A MARK)
+    { label: LABELS.mood,    href: link("mood") },
+    { label: LABELS.contact, href: link("contact") },
   ];
 
-  const item = m => `
+  const item = m => m.href ? `
+    <div class="item" data-label="${m.label}"><a class="head" href="${m.href}">${m.label}</a></div>` : `
     <div class="item" data-label="${m.label}">
       <button class="head" aria-expanded="false">${m.label} <span class="chev"></span></button>
       <div class="body"><div><div class="inner">${
@@ -487,8 +504,10 @@ const $ = (sel, root = document) => root.querySelector(sel);
           ? `<div class="stills">${m.projects.map(p => p.chapters
               ? `<a href="${link("what/" + p.id)}" style="background-image:url('${p.cover}')"><b>${p.num} · ${p.title}</b></a>`
               : `<span><b>${p.num} · ${p.title}</b></span>`).join("")}</div>`
-          : m.text
-      }${m.more ? `<a class="more" href="${link(m.more[1])}">${m.more[0]} &nbsp;→</a>` : ""}</div></div></div>
+          : m.services
+            ? `<ul class="svc-menu">${m.services.map(s => `<li>${s}</li>`).join("")}</ul>`
+            : m.text
+      }${m.more ? `<a class="more" href="${link(m.more[1])}">${m.more[0]}</a>` : ""}</div></div></div>
     </div>`;
 
   document.body.insertAdjacentHTML("afterbegin", `
@@ -511,7 +530,7 @@ const $ = (sel, root = document) => root.querySelector(sel);
   };
   $("#openBtn").onclick = open; $("#closeBtn").onclick = close; $("#scrim").onclick = close;
   addEventListener("keydown", e => e.key === "Escape" && close());
-  document.querySelectorAll(".item .head").forEach(btn => btn.onclick = () => {
+  document.querySelectorAll(".item button.head").forEach(btn => btn.onclick = () => {
     const it = btn.parentElement, was = it.classList.contains("is-open");
     document.querySelectorAll(".item").forEach(i => { i.classList.remove("is-open"); i.querySelector(".head").setAttribute("aria-expanded", "false"); });
     if (!was) { it.classList.add("is-open"); btn.setAttribute("aria-expanded", "true"); }
@@ -601,7 +620,7 @@ function mountStory(app, { list, total, base, crumb, onShow, endLinks, iris }, s
   });
 
   $(".next", app).onclick = () => S[cur + 1] && S[cur + 1].scrollIntoView({ behavior: "smooth" });
-  const top = $("[data-top]", app); if (top) top.onclick = () => jump(list[0].id);
+  app.querySelectorAll("[data-top]").forEach(b => b.onclick = () => S[0].scrollIntoView({ behavior: "smooth" }));   // glide back to the top
   const keys = e => {
     if (document.body.classList.contains("open")) return;
     if (["ArrowDown", "PageDown", " "].includes(e.key) && S[cur + 1]) { e.preventDefault(); S[cur + 1].scrollIntoView({ behavior: "smooth" }); }
@@ -620,7 +639,7 @@ function mountStory(app, { list, total, base, crumb, onShow, endLinks, iris }, s
 function mountProject(app, p, chapterId) {
   return mountStory(app, {
     list: p.chapters, total: p.chapters.length, base: "what/" + p.id,
-    crumb: `<a href="${link("what")}">WHAT</a> &nbsp;/&nbsp; ${p.num} · ${p.title}`,
+    crumb: `<button data-mark>${LABELS.mark}</button> &nbsp;/&nbsp; ${p.title}`,
     endLinks: `<button data-top>BACK TO THE START</button><a href="${link("stories")}">ALL STORIES</a><a href="${link("")}">HOME</a>`,
   }, chapterId);
 }
@@ -634,7 +653,7 @@ function mountWho(app, personId) {
              pinLabel: t.name.split(" ")[0], pinNote: String(i + 1).padStart(2, "0") })), END],
     iris: true,
     total: TEAM.length + 1, base: "who",
-    crumb: `<a href="${link("who/who-we-are")}">WHO</a> &nbsp;/&nbsp; THE COLLECTIVE`,
+    crumb: `<a href="${link("who/who-we-are")}">${LABELS.together}</a> &nbsp;/&nbsp; THE COLLECTIVE`,
     endLinks: `<button data-top>BACK TO THE START</button><button data-who>PICK SOMEONE</button>`,
     onShow: c => document.querySelectorAll(".people a").forEach(a => a.classList.toggle("here", a.dataset.id === c.id)),
   }, personId);
@@ -644,25 +663,30 @@ function mountWho(app, personId) {
 function mountWhat(app, chapterId) {
   const projects = PROJECTS.map((p, i) => p.chapters
     ? { id: "project-" + p.id, img: p.cover, kicker: "PROJECT " + p.num + " · " + p.year, title: p.title,
-        text: p.chapters[0].text.replace(/<\/?mark>/g, ""), links: [{ label: "OPEN THE STORY &nbsp;→", href: link("what/" + p.id) }] }
+        text: p.chapters[0].text.replace(/<\/?mark>/g, ""), links: [{ label: "OPEN THE STORY", href: link("what/" + p.id) }] }
     : { id: "project-" + p.id, kicker: "PROJECT " + p.num, title: p.title, text: "Coming soon." });
-  projects[projects.length - 1].links = [...(projects[projects.length - 1].links || []), NEXT("NEXT · WHY", "why")];
+  projects[projects.length - 1].links = [...(projects[projects.length - 1].links || []), NEXT(LABELS.look, "why")];
   const list = [...WHAT_INTRO, ...projects];
-  return mountStory(app, { list, total: list.length, base: "what", crumb: `WHAT &nbsp;/&nbsp; WHAT WE DO` }, chapterId);
+  return mountStory(app, { list, total: list.length, base: "what", crumb: `${LABELS.roll} &nbsp;/&nbsp; WHAT WE DO` }, chapterId);
 }
 
 // ---- PAGE · WHY (why/) ----
 function mountWhy(app) {
-  return mountStory(app, { list: WHY_INTRO, total: WHY_INTRO.length, base: "why", crumb: `WHY &nbsp;/&nbsp; HOW WE CONNECT` }, null);
+  return mountStory(app, { list: WHY_INTRO, total: WHY_INTRO.length, base: "why", crumb: `${LABELS.look} &nbsp;/&nbsp; HOW WE CONNECT` }, null);
+}
+
+// ---- PAGE · LISTEN (about/) ----
+function mountAbout(app) {
+  return mountStory(app, { list: ABOUT_INTRO, total: ABOUT_INTRO.length, base: "about", crumb: `${LABELS.listen} &nbsp;/&nbsp; ABOUT US` }, null);
 }
 
 // ---- PAGE · WHERE (where/) — the write-up, then one full screen per world ----
 function mountWhereStory(app, chapterId) {
-  const worlds = WHERE.map((w, i) => ({ id: w.word.toLowerCase(), kicker: "WHERE · " + String(i + 1).padStart(2, "0"), title: w.word, text: w.line,
+  const worlds = WHERE.map((w, i) => ({ id: w.word.toLowerCase(), kicker: LABELS.go + " · " + String(i + 1).padStart(2, "0"), title: w.word, text: w.line,
     img: WHERE_STILLS[w.word], clip: w.word === "STUDIO" ? null : w.clip }));
-  worlds[worlds.length - 1].links = [NEXT("NEXT · WHO WE ARE", "who")];
+  worlds[worlds.length - 1].links = [NEXT(LABELS.together, "who")];
   const list = [WHERE_INTRO, ...worlds];
-  return mountStory(app, { list, total: list.length, base: "where", crumb: `WHERE &nbsp;/&nbsp; EVERYWHERE` }, chapterId);
+  return mountStory(app, { list, total: list.length, base: "where", crumb: `${LABELS.go} &nbsp;/&nbsp; EVERYWHERE` }, chapterId);
 }
 
 // =====================================================================
@@ -764,6 +788,7 @@ function route(first) {
   }
   else if (a === "what")    { sub = b; mount = el => mountWhat(el, b); }
   else if (a === "why")     mount = mountWhy;
+  else if (a === "about")   mount = mountAbout;
   else if (a === "who")     { sub = b; mount = el => mountWho(el, b); }
   else if (a === "where")   { sub = b; mount = el => mountWhereStory(el, b); }
   else if (a === "mood")    mount = mountMood;
@@ -782,7 +807,7 @@ function route(first) {
 }
 addEventListener("hashchange", () => route(false));
 document.addEventListener("click", e => {          // crumbs + end-card buttons that open the menu
-  if (e.target.closest("[data-who]")) window.FFMenu.openAt("WHO");
-  if (e.target.closest("[data-what]")) window.FFMenu.openAt("WHAT");
+  if (e.target.closest("[data-who]")) window.FFMenu.openAt(LABELS.together);
+  if (e.target.closest("[data-what], [data-mark]")) window.FFMenu.openAt(LABELS.mark);
 });
 route(true);
