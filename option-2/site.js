@@ -101,6 +101,18 @@ const REEL = WP + "2024/03/Flattery-Films-on-the-Ground-FINALRECUT.mp4";   // st
 //   links: buttons at the bottom of that screen · clip: a video behind it
 // ---------------------------------------------------------------------
 const IMG = "../assets/img/stills/";
+// Bigger team photos kept in the repo (assets/img/team/<id>.jpg).
+//   pos: which part of the photo stays in frame · pin: where the name tag sits on screen [left %, top %]
+const TEAM_PHOTOS = {
+  wil:     { img: "../assets/img/team/wil.jpg",     pos: "50% 40%", pin: [62, 40] },
+  dani:    {                                                       pin: [52, 26] },
+  steven:  { img: "../assets/img/team/steven.jpg",  pos: "58% 30%", pin: [68, 24] },
+  suzanne: { img: "../assets/img/team/suzanne.jpg", pos: "35% 35%", pin: [48, 20] },
+  sean:    {                                                       pin: [58, 28] },
+  josh:    { img: "../assets/img/team/josh.jpg",    pos: "62% 40%", pin: [74, 38] },
+  shane:   {                                                       pin: [46, 28] },
+};
+TEAM.forEach(t => Object.assign(t, TEAM_PHOTOS[t.id] || {}));
 const NEXT = (label, path) => ({ label: label + " &nbsp;→", href: "#/" + path });   // same as link() below
 
 const WHAT_INTRO = [
@@ -484,16 +496,17 @@ const $ = (sel, root = document) => root.querySelector(sel);
 //  SCROLL STORY — one engine for projects and WHO
 //  (on the real site: the script in what/thin-space/index.html and who/index.html)
 // =====================================================================
-function mountStory(app, { list, total, base, crumb, onShow, endLinks }, startId) {
+function mountStory(app, { list, total, base, crumb, onShow, endLinks, iris }, startId) {
   const stroke = '<svg viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M1 6 C 20 2, 45 9, 70 4 S 95 5, 99 3"/></svg>';
   app.innerHTML = `
-    <div class="bgs"></div><div class="shade"></div>
+    <div class="bgs"></div><div class="shade"></div><div class="pins"></div>
     <div class="crumb">${crumb}</div>
     <div class="copy"></div>
     <div class="count"><span class="num">01</span><i><b class="bar"></b></i><span>${String(total).padStart(2, "0")}</span></div>
     <button class="next"><span class="nextLabel"></span><span class="pill"></span></button>
     <main class="steps"></main>`;
-  const bgs = $(".bgs", app), copy = $(".copy", app), steps = $(".steps", app);
+  const bgs = $(".bgs", app), copy = $(".copy", app), steps = $(".steps", app), pins = $(".pins", app);
+  app.classList.toggle("iris", !!iris);      // WHO: each person opens out of the dark in a soft circle (like DARK)
 
   list.forEach((c, i) => {
     bgs.insertAdjacentHTML("beforeend", c.clip
@@ -511,6 +524,8 @@ function mountStory(app, { list, total, base, crumb, onShow, endLinks }, startId
       ${listen}
       ${c.end ? `<div class="end-links">${endLinks}</div>` : ""}
     </article>`);
+    if (c.pin) pins.insertAdjacentHTML("beforeend", `<div class="pin" data-i="${i}" style="left:${c.pin[0]}%;top:${c.pin[1]}%">
+      <b>${c.pinLabel || ""}</b><i></i><em></em><span>${c.pinNote || ""}</span></div>`);
     steps.insertAdjacentHTML("beforeend", `<section class="step" data-i="${i}" aria-label="${c.title}"></section>`);
   });
   const B = [...bgs.children], C = [...copy.children], S = [...steps.children];
@@ -522,6 +537,7 @@ function mountStory(app, { list, total, base, crumb, onShow, endLinks }, startId
       b.classList.toggle("on", j === i);
       if (b.tagName === "VIDEO") { if (j === i) { if (!b.src) b.src = b.dataset.src; b.play().catch(() => {}); } else b.pause(); }
     });
+    pins.querySelectorAll(".pin").forEach(p => p.classList.toggle("on", +p.dataset.i === i));
     C.forEach((c, j) => { c.classList.toggle("on", j === i); c.classList.toggle("gone", j < i); });
     const n = Math.min(i + 1, total);
     $(".num", app).textContent = String(n).padStart(2, "0");
@@ -565,7 +581,7 @@ function mountStory(app, { list, total, base, crumb, onShow, endLinks }, startId
   };
   addEventListener("keydown", keys);
 
-  return { jump, cleanup() { io.disconnect(); stopAudio(); B.forEach(b => b.tagName === "VIDEO" && b.pause()); removeEventListener("keydown", keys);
+  return { jump, cleanup() { io.disconnect(); stopAudio(); B.forEach(b => b.tagName === "VIDEO" && b.pause()); app.classList.remove("iris"); removeEventListener("keydown", keys);
     document.documentElement.classList.remove("snap"); document.body.classList.remove("last"); } };
 }
 
@@ -583,7 +599,9 @@ function mountWho(app, personId) {
   const END = { id: "collective", end: true, kicker: "FLATTERY FILMS", title: "THE COLLECTIVE",
     text: "Directors, cinematographers and producers — more than 20 Emmy nominations between us, and one shared belief: attention reveals people's authentic beauty." };
   return mountStory(app, {
-    list: [WHO_INTRO, ...TEAM.map(t => ({ ...t, kicker: t.role, title: t.name, text: t.bio })), END],
+    list: [WHO_INTRO, ...TEAM.map((t, i) => ({ ...t, kicker: t.role, title: t.name, text: t.bio,
+             pinLabel: t.name.split(" ")[0], pinNote: String(i + 1).padStart(2, "0") })), END],
+    iris: true,
     total: TEAM.length + 1, base: "who",
     crumb: `<a href="${link("who/who-we-are")}">WHO</a> &nbsp;/&nbsp; THE COLLECTIVE`,
     endLinks: `<button data-top>BACK TO THE START</button><button data-who>PICK SOMEONE</button>`,
