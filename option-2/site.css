@@ -270,3 +270,6 @@ video.bg{width:100%;height:100%;object-fit:cover}
 
 /* full bios on the team screens: a slightly narrower reading column than the write-ups */
 .iris .chap.intro:not(:first-child){width:min(600px,86vw)}
+
+.chap.more{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),transparent)}
+.chap .lede + p a,.chap p a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--red)}

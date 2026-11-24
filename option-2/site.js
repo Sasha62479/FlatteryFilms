@@ -120,7 +120,11 @@ const BIOS = {
     "Wil’s ability to weave captivating stories, whether on the big screen or in the succinct moments of a commercial, reflects his deep understanding of the human experience and a commitment to storytelling that resonates to a myriad of target audiences. In the hands of this seasoned creator, narratives come alive, leaving an enduring impact on audiences, and establishing Wil Beaucher as a luminary in the art of visual storytelling." ] },
   dani: { role: "FOUNDING PARTNER · EXECUTIVE PRODUCER", paras: [
     "Dani Behr, a seasoned entertainment veteran, boasts an illustrious career spanning over 35 years.",
-    "Her journey began with acting with acclaimed theatre show producer Cameron Mackintosh, signing a record deal with WEA shortly after with her All-Girl Pop Group and then becoming a household name as a live TV Host. She achieved cult status in her native UK for her late-night show and was recognized with the prestigious ‘Best TV Presenter’ award. Dani continued to thrive across various media platforms, serving as a TV Host, Radio Host, Voice Over Artist, and TV Producer ever since. She has left her mark across all TV genres, collaborating with renowned networks such as ABC, NBCU, FOX, BBC, C4, and ITV." ] },
+    "Her journey began with acting with acclaimed theatre show producer Cameron Mackintosh, signing a record deal with WEA shortly after with her All-Girl Pop Group and then becoming a household name as a live TV Host. She achieved cult status in her native UK for her late-night show and was recognized with the prestigious ‘Best TV Presenter’ award. Dani continued to thrive across various media platforms, serving as a TV Host, Radio Host, Voice Over Artist, and TV Producer ever since. She has left her mark across all TV genres, collaborating with renowned networks such as ABC, NBCU, FOX, BBC, C4, and ITV.",
+    "Dubbed the ‘Voice Over Queen’, Dani has lent her voice to numerous brands including the BBC, Virgin Atlantic, and the iconic video game Lara Croft.",
+    "The Drive-time Radio Host on KISS FM, shared the stage and screen with acclaimed actors like Kate Winslet, Joseph Fiennes, Cate Blanchett, and Oprah Winfrey. Performed at legendary venues such as Wembley Stadium, The Old Vic, and Madison Square Gardens. <a href=\"https://www.danibehr.com\" target=\"_blank\" rel=\"noopener\">danibehr.com</a>",
+    "Currently, Dani serves as the Founder &amp; Executive Producer of DBI Entertainment, a dynamic TV &amp; Film Production company dedicated to creating scripted and non-scripted projects for the global marketplace. <a href=\"https://www.dbi-ent.com\" target=\"_blank\" rel=\"noopener\">dbi-ent.com</a>",
+    "Additionally, she has recently co-founded Flattery Films, a content creation production company specializing in storytelling through branded documentaries with her award-winning team." ] },
   steven: { role: "DIRECTOR OF PHOTOGRAPHY · CINEMATOGRAPHER", paras: [
     "Meet the visionary behind the lens, Steven V. Silver, a seasoned Director of Photography with an illustrious career adorned by 9 Emmy nominations and 3 Emmy wins. With an extraordinary eye for cinematography, Steven has left an indelible mark on the television landscape. His unparalleled talent has graced hit shows such as <i>2 1/2 Men</i>, <i>Big Bang Theory</i>, <i>Moms</i>, <i>Dharma and Greg</i>, and <i>Murphy Brown</i>.",
     "Steven’s commitment to capturing the essence of each moment has not only earned him critical acclaim but has also played an integral role in defining the visual identity of some of the most beloved sitcoms in television history. With a legacy of excellence, Steven V. Silver continues to illuminate screens and inspire audiences with his unique skill and creativity." ] },
@@ -605,6 +609,9 @@ function mountStory(app, { list, total, base, crumb, onShow, endLinks, iris }, s
   };
   addEventListener("keydown", keys);
 
+  // long write-ups and bios scroll inside their panel: fade the bottom edge while there's more to read
+  C.forEach(el => { const upd = () => el.classList.toggle("more", el.scrollTop + el.clientHeight < el.scrollHeight - 4);
+    el.addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); requestAnimationFrame(upd); });
   return { jump, cleanup() { io.disconnect(); stopAudio(); B.forEach(b => b.tagName === "VIDEO" && b.pause()); app.classList.remove("iris"); removeEventListener("keydown", keys);
     document.documentElement.classList.remove("snap"); document.body.classList.remove("last"); } };
 }
