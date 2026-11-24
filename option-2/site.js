@@ -48,11 +48,20 @@ const PROJECTS = [
   { id: "shelter",        num: "II",  title: "SHELTER" },          // add cover + chapters when ready
   // III · SHORT FILMS — Wil's independent films, most with Sean Murphy. Placeholder clips for now:
   //   clip = a silent looping video behind the panel (assets/video), img = its still (assets/img/posters)
-  { id: "short-films", num: "III", title: "SHORT FILMS", year: "WIL BEAUCHER", cover: "../assets/img/posters/short-simmer-down.jpg",
+  { id: "short-films", num: "III", title: "SHORT FILMS", year: "WIL BEAUCHER", cover: "../assets/img/posters/short-films-intro.jpg",
     chapters: [
+      { id: "intro", img: "../assets/img/posters/short-films-intro.jpg",
+        kicker: "PROJECT III · SHORT FILMS", title: "SHORT FILMS",
+        text: "Wil wrote, directed and produced short films for BOTE, all of them with photographer <mark>Sean Murphy</mark>, from Alaska to Belize, Costa Rica and Mexico, alongside the brand’s spokespeople." },
+      { id: "devils-of-the-deep", clip: "../assets/video/short-devils-of-the-deep.mp4", img: "../assets/img/posters/short-devils-of-the-deep.jpg",
+        kicker: "SHORT FILM · BOTE", title: "DEVILS OF THE DEEP",
+        text: "A parody of <i>River Monsters</i> with Jeremy Wade, written, produced and directed by Wil. One of the funniest things he’s made." },
+      { id: "beneath-the-surface", clip: "../assets/video/short-beneath-the-surface.mp4", img: "../assets/img/posters/short-beneath-the-surface.jpg",
+        kicker: "SHORT FILM · BOTE", title: "BENEATH THE SURFACE",
+        text: "A montage film. A few lines about it go here." },
       { id: "simmer-down", clip: "../assets/video/short-simmer-down.mp4", img: "../assets/img/posters/short-simmer-down.jpg",
-        kicker: "PROJECT III · SHORT FILMS", title: "SIMMER DOWN",
-        text: "A short film with photographer <mark>Sean Murphy</mark>. A few lines about this film go here." },
+        kicker: "SHORT FILM", title: "SIMMER DOWN",
+        text: "A short film with photographer Sean Murphy. A few lines about this film go here." },
       { id: "pura-vida", clip: "../assets/video/short-pura-vida.mp4", img: "../assets/img/posters/short-pura-vida.jpg",
         kicker: "SHORT FILM", title: "PURA VIDA", text: "A few lines about this film go here." },
       { id: "no-quarter", clip: "../assets/video/short-no-quarter.mp4", img: "../assets/img/posters/short-no-quarter.jpg",
